@@ -13,7 +13,8 @@ export class AddEmployeePage {
   constructor(private page: Page) {}
 
   async addEmployee(emp: OhrmEmployeeInput): Promise<void> {
-    await this.page.goto('/web/index.php/pim/addEmployee');
+    // 8.1 Enterprise serves routes at root (no /web/index.php prefix)
+    await this.page.goto('/pim/addEmployee');
     await this.page.getByPlaceholder('First Name').fill(emp.firstName);
     if (emp.middleName) await this.page.getByPlaceholder('Middle Name').fill(emp.middleName);
     await this.page.getByPlaceholder('Last Name').fill(emp.lastName);
@@ -21,7 +22,7 @@ export class AddEmployeePage {
     // TODO(selector): confirm — standard 5.x uses a generic input in the form grid
     await this.page.locator('.oxd-input-group:has-text("Employee Id") input').fill(emp.employeeId);
     await this.page.getByRole('button', { name: 'Save' }).click();
-    await this.page.waitForURL('**/pim/viewPersonalDetails/**');
+    await this.page.waitForURL('**/viewPersonalDetails/**');
   }
 
   /** Personal Details tab: gender, DOB, Other ID (→NIS), SSN (→TRN). */
