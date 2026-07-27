@@ -4,3 +4,6 @@ test-results/
 playwright-report/
 blob-report/
 .auth/
+.sysadmin-state.json
+explore/.sysadmin-state.json
+explore/*.png

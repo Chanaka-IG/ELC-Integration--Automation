@@ -1,0 +1,116 @@
+{
+  "links": [
+    {
+      "text": "RabbitMQ Queue Publishing",
+      "href": "",
+      "onclick": null,
+      "id": "",
+      "class": "executionTask",
+      "rowHtml": "<tr class=\"dataRaw\">\n                                                                            <td style=\"width: 30%\" class=\" \"><a href=\"\" target=\"\" class=\"executionTask\">RabbitMQ Queue Publishing</a><input type=\"hidden\" name=\"\" id=\"\" class=\"cronTaskId\" value=\"15\"></td>\n                                                                                <td style=\"width: 15%\" class=\" \"><a style=\"float: left; padding-top: 6px;\" class=\"cronTaskSchedule\">Every minute</a></td>\n                                                                                <td style=\"width: 15%\" class=\" \">2026-07-27 16:01:06</td>\n                                                                                <td style=\"width: 10%\" class=\" \"><a href=\"/index.php/managementtool_notship/cronHistory/taskId/15/taskName/RabbitMQ Queue Publishing/fromPage/scheduledTasks\" target=\"\">View history</a></td>\n                                                                                <td style=\"width: 10%\" class=\" \"><div class=\"switch\">\n                            <label>\n                                <input class=\"statusSwitch\" id=\"status_15\" type=\"checkbox\" checked=\"\">\n                                <span class=\"lever\"></span>\n                            </label>\n                    </div></td>\n                                                                        </tr>"
+    },
+    {
+      "text": "RabbitMQ Queue Subscribing",
+      "href": "",
+      "onclick": null,
+      "id": "",
+      "class": "executionTask",
+      "rowHtml": "<tr class=\"dataRaw\">\n                                                                            <td style=\"width: 30%\" class=\" \"><a href=\"\" target=\"\" class=\"executionTask\">RabbitMQ Queue Subscribing</a><input type=\"hidden\" name=\"\" id=\"\" class=\"cronTaskId\" value=\"16\"></td>\n                                                                                <td style=\"width: 15%\" class=\" \"><a style=\"float: left; padding-top: 6px;\" class=\"cronTaskSchedule\">Every minute</a></td>\n                                                                                <td style=\"width: 15%\" class=\" \">2026-07-27 16:01:06</td>\n                                                                                <td style=\"width: 10%\" class=\" \"><a href=\"/index.php/managementtool_notship/cronHistory/taskId/16/taskName/RabbitMQ Queue Subscribing/fromPage/scheduledTasks\" target=\"\">View history</a></td>\n                                                                                <td style=\"width: 10%\" class=\" \"><div class=\"switch\">\n                            <label>\n                                <input class=\"statusSwitch\" id=\"status_16\" type=\"checkbox\" checked=\"\">\n                                <span class=\"lever\"></span>\n                            </label>\n                    </div></td>\n                                                                        </tr>"
+    }
+  ],
+  "forms": [
+    {
+      "id": "frmList_ohrmListComponent",
+      "action": "https://8101jnb1nw-temp14-kord.orangehrm.com/managementtool_notship/viewScheduledCronTasks",
+      "method": "get"
+    }
+  ],
+  "modals": [
+    {
+      "id": "displayAbout",
+      "class": "modal beaconDisplayAbout",
+      "text": "About\n    \n    \n        \n    \n    \n        Ok\n        Cancel"
+    },
+    {
+      "id": "",
+      "class": "customized-modal-header",
+      "text": "About"
+    },
+    {
+      "id": "",
+      "class": "modal-content customized-modal-content",
+      "text": ""
+    },
+    {
+      "id": "",
+      "class": "modal-footer",
+      "text": "Ok\n        Cancel"
+    },
+    {
+      "id": "heartbeatSubmitBtn",
+      "class": "modal-action action-btn waves-effect btn ohrm-modal-submit-btn right",
+      "text": "Ok"
+    },
+    {
+      "id": "heartbeatCancelBtn",
+      "class": "modal-action modal-close cancel-btn waves-effect btn right",
+      "text": "Cancel"
+    },
+    {
+      "id": "viewOutput",
+      "class": "modal confirm-dialog",
+      "text": "No emails in the queue to clear.\n    \n\n    \n        cancel"
+    },
+    {
+      "id": "",
+      "class": "modal-content",
+      "text": "No emails in the queue to clear."
+    },
+    {
+      "id": "",
+      "class": "modal-footer",
+      "text": "cancel"
+    },
+    {
+      "id": "task-delete-cancel-button",
+      "class": "modal-action modal-close waves-effect btn right cancel-btn",
+      "text": "cancel"
+    },
+    {
+      "id": "taskExecutionModal",
+      "class": "modal custom-height-modal modal-fixed-footer",
+      "text": "Update\n        Cancel"
+    },
+    {
+      "id": "",
+      "class": "customized-modal-header",
+      "text": ""
+    },
+    {
+      "id": "",
+      "class": "modal-content customized-modal-content",
+      "text": ""
+    },
+    {
+      "id": "",
+      "class": "modal-footer",
+      "text": "Update\n        Cancel"
+    },
+    {
+      "id": "saveTaskType",
+      "class": "modal-action action-btn waves-effect btn ohrm-modal-submit-btn right",
+      "text": "Update"
+    },
+    {
+      "id": "",
+      "class": "modal-action modal-close cancel-btn waves-effect btn right",
+      "text": "Cancel"
+    }
+  ],
+  "scripts": [
+    "\n\n    try {\n        if (window.self === window.top && window.top.location != 'https://8101jnb1nw-temp14-kord.orangehrm.com/client/#/noncore/managementtool_notship/viewScheduledCronTasks') {\n            window.top.location = 'https://8101jnb1nw-temp14-kord.orangehrm.com/client/#/noncore/managementtool_notship/viewScheduledCronTasks';\n        }\n    } catch (e) {\n\n    }\n\n",
+    "\n\nvar menus = [{\"id\":\"81\",\"parentId\":\"1\",\"level\":\"3\",\"menuTitle\":\"Users\",\"combinedMenuTitle\":\"People Management > HR Administration > Users\",\"imageName\":null,\"order_hint\":\"100\",\"itemAttributes\":{\"class\":\"level3\"},\"linkAttributes\":{\"data-automation-id\":\"menu_admin_viewSystemUsers\",\"href\":\"\\/client\\/#\\/route\\/admin.systemUsers\",\"ui-sref\":\"admin.systemUsers\",\"ui-sref-opts\":\"{reload: true, notify: true}\",\"target\":\"_parent\",\"ng-attr-target\":\"{{undefined}}\",\"id\":\"menu_item_81\"}},{\"id\":\"186\",\"parentId\":\"1\",\"level\":\"3\",\"menuTitle\":\"Manage User Roles\",\"combinedMenuTitle\":\"People Management > HR Administration > Manage User Roles\",\"imageName\":null,\"order_hint\":\"150\",\"itemAttributes\":{\"class\":\"level3\"},\"linkAttributes\":{\"data-automation-id\":\"menu_admin_viewUserRoles\",\"href\":\"\\/client\\/#\\/route\\/admin.user_roles\",\"ui-sref\":\"admin.user_roles\",\"ui-sref-opts\":\"{reload: true, notify: true}\",\"target\":\"_parent\",\"ng-attr-target\":\"{{undefined}}\",\"id\":\"menu_item_186\"}},{\"id\":\"7\",\"parentId\":\"6\",\"level\":\"4\",\"menuTitle\":\"Manage Job Titles\",\"combinedMenuTitle\":\"People Management > HR Administration > Job > Manage Job Titles\",\"imageName\":null,\"order_hint\":\"100\",\"itemAttributes\":{\"class\":\"level4\"},\"linkAttributes\":{\"data-automation-id\":\"menu_admin_viewJobTitleList\",\"href\":\"\\/client\\/#\\/route\\/vueadmin.jobTitle.list\",\"ui-sref\":\"vueadmin.jobTitle.list\",\"ui-sref-opts\":\"{reload: true, notify: true}\",\"target\":\"_parent\",\"ng-attr-target\":\"{{undefined}}\",\"id\":\"menu_item_7\"}},{\"id\":\"142\",\"parentId\":\"6\",\"level\":\"4\",\"menuTitle\":\"Manage Salary Components\",\"combinedMenuTitle\":\"People Management > HR Administration > Job > Manage Salary Components\",\"imageName\":null,\"order_hint\":\"100\",\"itemAttributes\":{\"class\":\"level4\"},\"linkAttributes\":{\"data-automation-id\":\"menu_admin_viewSalaryComponentList\",\"href\":\"\\/client\\/#\\/route\\/admin.salary_components\",\"ui-sref\":\"admin.salary_components\",\"ui-sref-opts\":\"{reload: true, notify: true}\",\"target\":\"_parent\",\"ng-attr-target\":\"{{undefined}}\",\"id\":\"menu_item_142\"}},{\"id\":\"8\",\"parentId\":\"6\",\"level\":\"4\",\"menuTitle\":\"Manage Pay Grades\",\"combinedMenuTitle\":\"People Management > HR Administration > Job > Manage Pay Grades\",\"imageName\":null,\"order_hint\":\"200\",\"itemAttributes\":{\"class\":\"level4\"},\"linkAttributes\":{\"data-automation-id\":\"menu_admin_viewPayGrades\",\"href\":\"\\/client\\/#\\/route\\/vueadmin.pay_grades\",\"ui-sref\":\"vueadmin.pay_grades\",\"ui-sref-opts\":\"{reload: true, notify: true}\",\"target\":\"_parent\",\"ng-attr-target\":\"{{undefined}}\",\"id\":\"menu_item_8\"}},{\"id\":\"9\",\"parentId\":\"6\",\"level\":\"4\",\"menuTitle\":\"Manage Employment Status\",\"combinedMenuTitle\":\"People Management > HR Administration > Job > Manage Employment Status\",\"imageName\":null,\"order_hint\":\"300\",\"itemAttributes\":{\"class\":\"level4\"},\"linkAttributes\":{\"data-automation-id\":\"menu_admin_employmentStatus\",\"href\":\"\\/client\\/#\\/route\\/admin.employment_status\",\"ui-sref\":\"admin.employment_status\",\"ui-sref-opts\":\"{reload: true, notify: true}\",\"target\":\"_parent\",\"ng-attr-target\":\"{{undefined}}\",\"id\":\"menu_item_",
+    "\n    var restrictHelpButton =  \"\"==1;\n    var actionName = \"viewScheduledCronTasks\";\n    var moduleName = \"managementtool_notship\";\n    var helpText = 'Help';\n    var helpUrl = '/help/help';\n\n    $('.help-button').keypress(function(event) {\n        if (event.key === 'Enter') {\n            $('.help-button').click();\n        }\n    });\n",
+    "\n    var hasSelectableRaws = '';\n    var dropDown_i_tag_id = '';\n    var selectAll = 'Select All';\n    var deselectAll = 'Deselect All';\n    var selectAll_id = '';\n    var deselectAll_id = '';\n    var configureList_id = '';\n    var menuDropDownId = '';\n    var noRecordMsgEnabled = true;\n    var moduleUrl = '/managementtool_notship/viewScheduledCronTasks';\n    var totRecordCount = parseInt('28');\n    var pgNo = parseInt('0');\n    var recordCount = parseInt('');\n    var contentId = 'taskList';\n    var noRecordsMsg = 'No Records Found';\n    var isPagination = '';\n    var formId = 'frmList_ohrmListComponent';\n    var maxNumberOfFieldsExceed = 'Maximum allowed field count has exceeded. Please select less than 1 fields.';\n\n    var maxNumberOfFields = '';\n    var saveListConfigAjaxUrl = '/core/saveListConfiguration?listName=SymfonyTask';\n    $(document).ready(function () {\n        $('.dropdown-button-menuList').dropdown({constrain_width: false});\n        $('.tooltipped').tooltip();\n        $('a[init-activity=false]').parent().hide();\n        var selectAllAnchorId = \"#\" + selectAll_id;\n        var deselectAllAnchorId = \"#\" + deselectAll_id;\n        var configureListAnchorId = \"#\" + configureList_id;\n        $(deselectAllAnchorId).parent().hide();\n\n        var selectAllInProgress = true;\n        var selectInProgress = true;\n        var formTemp;\n        var configureListAnchorId = \"#\" + configureList_id;\n        var checked = $(\".list-config:checkbox:checked\").length;\n        $('input[type=\"checkbox\"].list-config').change(function() {\n            checked = $(\".list-config:checkbox:checked\").length;\n            if((checked)>maxNumberOfFields){\n                toast.remove();\n                document.getElementById(\"btnSaveListConfig\").classList.add('disabled');\n                toast.show('warning', maxNumberOfFieldsExceed);\n            } else {\n                document.getElementById(\"btnSaveListConfig\").classList.remove('disabled');\n                toast.remove();\n            }\n        });\n        $('#btnSaveListConfig').click(function (){\n            if(!((checked)>maxNumberOfFields)) {\n                $.post(saveListConfigAjaxUrl, $('#configureList').serialize(), function (data) {\n                    var message = JSON.parse(data);\n                    toast.show(message['state'], message['message']);\n                    $('#configListModal').closeModal();\n                    window.top.location.reload();\n                });\n            }\n        });\n        if (configureList_id) {\n            $(configureListAnchorId).on('click touchstart', function () {\n                $('#configListModal').openModal({\n                    ready: function () {\n                        if(formTemp) {\n                            $('#configureList').find('input[type=\"checkbox\"]').each(function(ele){\n                                var elementId = this.id;\n                                if($(formTemp).find('#'+elementId).is(':checked')){\n                                    $",
+    "\n    var cronStateChangeUrl = \"/managementtool_notship/cronStateChangeAjax\";\n    var editCronUrl = \"/managementtool_notship/editCron\";\n    var editCronUrl = \"/managementtool_notship/editCron\";\n    var lang_invalid = 'Invalid';\n    var lang_Required = 'Required';\n"
+  ]
+}

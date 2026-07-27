@@ -1,0 +1,123 @@
+$(document).ready(function () {
+    var cronstrue = window.cronstrue;
+    $('select').material_select();
+    var taskId = "";
+    // toast.show('warning', warningMessage);
+    $('.dataRaw').find('.executionTask').live('click', function (e) {
+        $this = $(this);
+        taskId = $this.next().val();
+        e.preventDefault();
+        preloaderOption.On();
+        ohrmAjaxHandler.url = editCronUrl;
+        ohrmAjaxHandler.type = 'GET';
+        ohrmAjaxHandler.dataType = 'JSON';
+        ohrmAjaxHandler.data = {'taskId' : taskId};
+        var taskName = $this.text();
+        ohrmAjaxHandler.success = function (data, textStatus, jqXHR) {
+            if (data.hasOwnProperty('editForm')) {
+                $("#taskExecutionModal .modal-content").html(data.editForm);
+                $("#editScheduledCron_schedule").parent().append('<div id="cronMeaning" class="row requiredHelperText"></div>');
+                var cronSchedule = $('#editScheduledCron_schedule').val();
+                if(cronSchedule && cronSchedule != "") {
+                    $('#cronMeaning').text(cronstrue.toString(cronSchedule));
+                }
+                applyFormValidators();
+            }
+            $("#taskExecutionModal #executorHeader").html(taskName);
+
+            $("#taskExecutionModal").openModal();
+            preloaderOption.Off();
+        };
+        ohrmAjaxHandler.call();
+    });
+
+    $(document).on('keyup keypress blur change','#editScheduledCron_schedule', function () {
+        try {
+            var meaning = cronstrue.toString($(this).val());
+            $('#cronMeaning').text(meaning);
+        } catch (e) {
+            $('#cronMeaning').text("");
+        }
+    });
+
+    $('.viewOutput').click(function (e) {
+        e.preventDefault();
+        $("#viewOutput").openModal();
+    });
+
+    $('#saveTaskType').live('click', function (e) {
+        e.preventDefault();
+        if (!$("#formUpdateCron").valid()) {
+            return null;
+        }
+        preloaderOption.On();
+        ohrmAjaxHandler.url = editCronUrl + "?taskId=" + taskId;
+        ohrmAjaxHandler.type = 'POST';
+        ohrmAjaxHandler.dataType = 'JSON';
+        $("#editScheduledCron_task").removeAttr('disabled');
+        var cronSchedule = $('#editScheduledCron_schedule').val();
+
+        ohrmAjaxHandler.data = $("#formUpdateCron").serialize();
+        ohrmAjaxHandler.success = function (data, textStatus, jqXHR) {
+            preloaderOption.Off();
+            $("#taskExecutionModal").closeModal();
+            toast.show(data['status'], data['output']);
+            $('.cronTaskId[value='+taskId+']').closest('tr').find('td:eq(1) a.cronTaskSchedule').text(cronstrue.toString(cronSchedule));
+        };
+        ohrmAjaxHandler.call();
+    });
+
+    $(".statusSwitch").change(function() {
+            var cronId = this.id.split("_")[1];
+            if(this.checked) {
+                var status = 1;
+            } else {
+                var status = 0;
+            }
+        preloaderOption.On();
+        ohrmAjaxHandler.url = cronStateChangeUrl + "?taskId=" + taskId;
+        ohrmAjaxHandler.type = 'POST';
+        ohrmAjaxHandler.dataType = 'JSON';
+        ohrmAjaxHandler.data = {'id' : cronId, 'status' : status}
+        ohrmAjaxHandler.success = function (data, textStatus, jqXHR) {
+            preloaderOption.Off();
+            toast.show(data['status'], data['output']);
+        };
+        ohrmAjaxHandler.call();
+
+    });
+
+
+    $('.dataRaw .cronTaskSchedule').each(function (index) {
+        $(this).text(cronstrue.toString($(this).text()));
+    });
+
+    $.validator.addMethod("validCronSchedule", function (value, element) {
+        try {
+            var meaning = cronstrue.toString(value);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    });
+
+
+    function applyFormValidators() {
+        $("#formUpdateCron").validate({
+            rules: {
+                'editScheduledCron[schedule]': {
+                    required: true,
+                    validCronSchedule: true
+                },
+            },
+            messages: {
+                'editScheduledCron[schedule]': {
+                    required: lang_Required,
+                    validCronSchedule: lang_invalid
+                },
+            }
+        });
+    }
+});
+
+

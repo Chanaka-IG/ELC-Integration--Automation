@@ -1,0 +1,426 @@
+- iframe
+# ── frame: https://8101jnb1nw-temp14-kord.orangehrm.com/managementtool_notship/viewScheduledCronTasks ──
+- link "oxd_prev":
+  - /url: javascript:void(0)
+- img
+- text: ohrm_settings System Admin search
+- combobox:
+  - textbox "Search"
+- list:
+  - listitem:
+    - link "HR Administration":
+      - /url: /client/#/route/admin.systemUsers
+      - img
+      - text: HR Administration
+  - listitem:
+    - link "Employee Management":
+      - /url: "/client/#/route/pim.employees({\"filterParameters\":null,\"calledFromMyShortcuts\":null})"
+      - img
+      - text: Employee Management
+  - listitem:
+    - link "Reports and Analytics":
+      - /url: /client/#/route/reports_and_analytics.catalogue
+      - img
+      - text: Reports and Analytics
+  - listitem:
+    - link "Leave":
+      - /url: "/client/#/route/leave.view_leave_list({\"filter\":null})"
+      - img
+      - text: Leave
+  - listitem:
+    - link "Time Tracking":
+      - /url: /client/#/route/time.employee_timesheets
+      - img
+      - text: Time Tracking
+  - listitem:
+    - link "Attendance":
+      - /url: /client/#/route/attendance.late_grace_period
+      - img
+      - text: Attendance
+  - listitem:
+    - link "Onboarding":
+      - /url: /client/#/route/preboarding.preboardingEmployees
+      - img
+      - text: Onboarding
+  - listitem:
+    - link "Goals":
+      - /url: /client/#/route/performance.goals.approved
+      - img
+      - text: Goals
+  - listitem:
+    - link "Performance":
+      - /url: "/client/#/route/performance.view_appraisals_list({\"resetPagination\": true})"
+      - img
+      - text: Performance
+  - listitem:
+    - link "Career Development":
+      - /url: /client/#/route/succession_and_development.list_idp
+      - img
+      - text: Career Development
+  - listitem:
+    - link "request desk Request Desk":
+      - /url: /client/#/route/help_desk.form_types_configuration
+      - img "request desk"
+      - text: Request Desk
+  - listitem:
+    - link "Configurations":
+      - /url: /admin/exportConfiguration
+      - img
+      - text: Configurations
+  - listitem:
+    - link "Management Tools":
+      - /url: /bulkdata/main
+      - img
+      - text: Management Tools
+  - listitem:
+    - link "Surveys New":
+      - /url: "/client/#/route/appbuilder_app.record_list({\"appId\":1,\"applicationFormId\":\"3\",\"listType\":\"list\"})"
+      - img
+      - text: Surveys New
+- banner:
+  - navigation:
+    - list:
+      - listitem: Management Tools
+    - list:
+      - listitem:
+        - link "oxd_logout_round Log Out":
+          - /url: /auth/logout
+        - link "arrow_drop_down":
+          - /url: javascript:void(0)
+    - link "oxd_home_menu":
+      - /url: /client/#/dashboard
+    - link "Bulk Data Upload":
+      - /url: /bulkdata/main
+    - link "License Update":
+      - /url: /license/addLicense
+    - link "Executable Tasks":
+      - /url: /managementtool_notship/viewCronTasks
+    - link "Scheduled Tasks":
+      - /url: /managementtool_notship/viewScheduledCronTasks
+    - list
+    - list:
+      - listitem: ohrm_help
+      - listitem:
+        - link "oxd_shortcut":
+          - /url: javascript:void(0)
+- table:
+  - rowgroup:
+    - row "Task Schedule Last Run History Status":
+      - columnheader "Task"
+      - columnheader "Schedule"
+      - columnheader "Last Run"
+      - columnheader "History"
+      - columnheader "Status"
+  - rowgroup:
+    - row "Attendance Process At 05:00 AM 2026-07-27 05:00:11 View history":
+      - cell "Attendance Process":
+        - link "Attendance Process":
+          - /url: ""
+      - cell "At 05:00 AM"
+      - cell "2026-07-27 05:00:11"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/11/taskName/Attendance Process/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Auto Punch Out At 17 minutes past the hour 2026-07-27 15:17:06 View history":
+      - cell "Auto Punch Out":
+        - link "Auto Punch Out":
+          - /url: ""
+      - cell "At 17 minutes past the hour"
+      - cell "2026-07-27 15:17:06"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/38/taskName/Auto Punch Out/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Clean Logs Data and Tables At 01:00 AM 2026-07-27 01:00:14 View history":
+      - cell "Clean Logs Data and Tables":
+        - link "Clean Logs Data and Tables":
+          - /url: ""
+      - cell "At 01:00 AM"
+      - cell "2026-07-27 01:00:14"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/14/taskName/Clean Logs Data and Tables/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Contact details requests rejection task At 04:00 AM 2026-07-27 15:56:04 View history":
+      - cell "Contact details requests rejection task":
+        - link "Contact details requests rejection task":
+          - /url: ""
+      - cell "At 04:00 AM"
+      - cell "2026-07-27 15:56:04"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/20/taskName/Contact details requests rejection task/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Diagnose Scheduled Tasks Execution Failures At 02:00 AM 2026-07-27 02:00:12 View history":
+      - cell "Diagnose Scheduled Tasks Execution Failures":
+        - link "Diagnose Scheduled Tasks Execution Failures":
+          - /url: ""
+      - cell "At 02:00 AM"
+      - cell "2026-07-27 02:00:12"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/21/taskName/Diagnose Scheduled Tasks Execution Failures/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Execute Scheduled Reports Every minute 2026-07-27 15:56:07 View history":
+      - cell "Execute Scheduled Reports":
+        - link "Execute Scheduled Reports":
+          - /url: ""
+      - cell "Every minute"
+      - cell "2026-07-27 15:56:07"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/35/taskName/Execute Scheduled Reports/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Goals and Appraisals Monthly Upload Task At 15, 30, and 45 minutes past the hour, at 11:00 PM, between day 28 and 31 of the month 2026-07-27 15:56:04 View history":
+      - cell "Goals and Appraisals Monthly Upload Task":
+        - link "Goals and Appraisals Monthly Upload Task":
+          - /url: ""
+      - cell "At 15, 30, and 45 minutes past the hour, at 11:00 PM, between day 28 and 31 of the month"
+      - cell "2026-07-27 15:56:04"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/39/taskName/Goals and Appraisals Monthly Upload Task/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Invalidate Employee Course Certificates At 01:00 AM --- View history":
+      - cell "Invalidate Employee Course Certificates":
+        - link "Invalidate Employee Course Certificates":
+          - /url: ""
+      - cell "At 01:00 AM"
+      - cell "---"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/51/taskName/Invalidate Employee Course Certificates/fromPage/scheduledTasks
+      - cell:
+        - checkbox
+    - row "Late Arrival Request Reminder At 11:30 PM 2026-07-27 15:56:04 View history":
+      - cell "Late Arrival Request Reminder":
+        - link "Late Arrival Request Reminder":
+          - /url: ""
+      - cell "At 11:30 PM"
+      - cell "2026-07-27 15:56:04"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/32/taskName/Late Arrival Request Reminder/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Notify Job/Salary Records Reaching Effective Date At 12:15 AM 2026-07-27 00:15:10 View history":
+      - cell "Notify Job/Salary Records Reaching Effective Date":
+        - link "Notify Job/Salary Records Reaching Effective Date":
+          - /url: ""
+      - cell "At 12:15 AM"
+      - cell "2026-07-27 00:15:10"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/36/taskName/Notify Job/Salary Records Reaching Effective Date/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Onboarding Notification At 05:00 AM --- View history":
+      - cell "Onboarding Notification":
+        - link "Onboarding Notification":
+          - /url: ""
+      - cell "At 05:00 AM"
+      - cell "---"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/12/taskName/Onboarding Notification/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Onboarding Quick Notification Every 15 minutes --- View history":
+      - cell "Onboarding Quick Notification":
+        - link "Onboarding Quick Notification":
+          - /url: ""
+      - cell "Every 15 minutes"
+      - cell "---"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/13/taskName/Onboarding Quick Notification/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Process Attendance Exceptions Every hour 2026-07-27 15:00:11 View history":
+      - cell "Process Attendance Exceptions":
+        - link "Process Attendance Exceptions":
+          - /url: ""
+      - cell "Every hour"
+      - cell "2026-07-27 15:00:11"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/47/taskName/Process Attendance Exceptions/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Process Attendance Sheets At 01:00 AM 2026-07-27 01:00:13 View history":
+      - cell "Process Attendance Sheets":
+        - link "Process Attendance Sheets":
+          - /url: ""
+      - cell "At 01:00 AM"
+      - cell "2026-07-27 01:00:13"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/26/taskName/Process Attendance Sheets/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Process Leave Accrual and Carry Forward Every 15 minutes edit_location 2026-07-27 15:45:10 View history":
+      - cell "Process Leave Accrual and Carry Forward":
+        - link "Process Leave Accrual and Carry Forward":
+          - /url: ""
+      - cell "Every 15 minutes edit_location"
+      - cell "2026-07-27 15:45:10"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/4/taskName/Process Leave Accrual and Carry Forward/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Process Leave Notification At 05:00 AM 2026-07-27 05:00:11 View history":
+      - cell "Process Leave Notification":
+        - link "Process Leave Notification":
+          - /url: ""
+      - cell "At 05:00 AM"
+      - cell "2026-07-27 05:00:11"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/10/taskName/Process Leave Notification/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Queue Email Notifications To Be Sent At 05:00 AM 2026-07-27 05:00:09 View history":
+      - cell "Queue Email Notifications To Be Sent":
+        - link "Queue Email Notifications To Be Sent":
+          - /url: ""
+      - cell "At 05:00 AM"
+      - cell "2026-07-27 05:00:09"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/2/taskName/Queue Email Notifications To Be Sent/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "RabbitMQ Queue Publishing Every minute 2026-07-27 15:56:07 View history":
+      - cell "RabbitMQ Queue Publishing":
+        - link "RabbitMQ Queue Publishing":
+          - /url: ""
+      - cell "Every minute"
+      - cell "2026-07-27 15:56:07"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/15/taskName/RabbitMQ Queue Publishing/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "RabbitMQ Queue Subscribing Every minute 2026-07-27 15:56:07 View history":
+      - cell "RabbitMQ Queue Subscribing":
+        - link "RabbitMQ Queue Subscribing":
+          - /url: ""
+      - cell "Every minute"
+      - cell "2026-07-27 15:56:07"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/16/taskName/RabbitMQ Queue Subscribing/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "RAG Processing Every 5 minutes --- View history":
+      - cell "RAG Processing":
+        - link "RAG Processing":
+          - /url: ""
+      - cell "Every 5 minutes"
+      - cell "---"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/45/taskName/RAG Processing/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Send Notifications Every 5 minutes 2026-07-27 15:55:07 View history":
+      - cell "Send Notifications":
+        - link "Send Notifications":
+          - /url: ""
+      - cell "Every 5 minutes"
+      - cell "2026-07-27 15:55:07"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/1/taskName/Send Notifications/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Send Punch Reminder Notifications Every 15 minutes 2026-07-27 15:45:10 View history":
+      - cell "Send Punch Reminder Notifications":
+        - link "Send Punch Reminder Notifications":
+          - /url: ""
+      - cell "Every 15 minutes"
+      - cell "2026-07-27 15:45:10"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/44/taskName/Send Punch Reminder Notifications/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Sync 321 Forms At 02:00 AM --- View history":
+      - cell "Sync 321 Forms":
+        - link "Sync 321 Forms":
+          - /url: ""
+      - cell "At 02:00 AM"
+      - cell "---"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/52/taskName/Sync 321 Forms/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Task Schedule Execution Every 5 minutes 2026-07-27 15:55:09 View history":
+      - cell "Task Schedule Execution":
+        - link "Task Schedule Execution":
+          - /url: ""
+      - cell "Every 5 minutes"
+      - cell "2026-07-27 15:55:09"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/48/taskName/Task Schedule Execution/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Terminate Employment & Update Employee Job Details Every 30 minutes 2026-07-27 15:30:11 View history":
+      - cell "Terminate Employment & Update Employee Job Details":
+        - link "Terminate Employment & Update Employee Job Details":
+          - /url: ""
+      - cell "Every 30 minutes"
+      - cell "2026-07-27 15:30:11"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/9/taskName/Terminate Employment & Update Employee Job Details/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Trigger Async Events Every 5 minutes 2026-07-27 15:56:04 View history":
+      - cell "Trigger Async Events":
+        - link "Trigger Async Events":
+          - /url: ""
+      - cell "Every 5 minutes"
+      - cell "2026-07-27 15:56:04"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/25/taskName/Trigger Async Events/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Update Missing Address At 01:00 AM 2026-07-27 01:00:13 View history":
+      - cell "Update Missing Address":
+        - link "Update Missing Address":
+          - /url: ""
+      - cell "At 01:00 AM"
+      - cell "2026-07-27 01:00:13"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/27/taskName/Update Missing Address/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+    - row "Zoho Daily Sync At 05:00 AM 2026-07-27 15:56:04 View history":
+      - cell "Zoho Daily Sync":
+        - link "Zoho Daily Sync":
+          - /url: ""
+      - cell "At 05:00 AM"
+      - cell "2026-07-27 15:56:04"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/30/taskName/Zoho Daily Sync/fromPage/scheduledTasks
+      - cell:
+        - checkbox [checked]
+- text: OrangeHRM 8.1 The Jamaica National Group © 2005 - 2026
+- link "OrangeHRM, Inc":
+  - /url: http://www.orangehrm.com
+- text: . All rights reserved. Profile Settings HR Administration HR Administration HR Administration Employee Management Employee Management Employee Management Reports and Analytics Reports and Analytics Reports and Analytics Leave Leave Leave Time Tracking Time Tracking Time Tracking Attendance Attendance Attendance Onboarding Onboarding Onboarding Goals Goals Goals Performance Performance Performance Career Development Career Development Career Development Request Desk Request Desk Request Desk Configurations Configurations Configurations Management Tools Management Tools Management Tools Surveys New Surveys Surveys New Management Tools External Links Home Help My Shortcuts Country Based Accrual Schedule Profile Settings HR Administration HR Administration HR Administration Employee Management Employee Management Employee Management Reports and Analytics Reports and Analytics Reports and Analytics Leave Leave Leave Time Tracking Time Tracking Time Tracking Attendance Attendance Attendance Onboarding Onboarding Onboarding Goals Goals Goals Performance Performance Performance Career Development Career Development Career Development Request Desk Request Desk Request Desk Configurations Configurations Configurations Management Tools Management Tools Management Tools Surveys New Surveys Surveys New Management Tools Home Help My Shortcuts Country Based Accrual Schedule Profile Settings HR Administration HR Administration HR Administration Employee Management Employee Management Employee Management Reports and Analytics Reports and Analytics Reports and Analytics Leave Leave Leave Time Tracking Time Tracking Time Tracking Attendance Attendance Attendance Onboarding Onboarding Onboarding Goals Goals Goals Performance Performance Performance Career Development Career Development Career Development Request Desk Request Desk Request Desk Configurations Configurations Configurations Management Tools Management Tools Management Tools Surveys New Surveys Surveys New Management Tools Home Help My Shortcuts Hiring Requisition Country Based Accrual Schedule

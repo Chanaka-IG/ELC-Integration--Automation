@@ -1,0 +1,471 @@
+- link "oxd_prev":
+  - /url: javascript:void(0)
+- img
+- text: ohrm_settings System Admin search
+- combobox:
+  - textbox "Search"
+- list:
+  - listitem:
+    - link "HR Administration":
+      - /url: /client/#/route/admin.systemUsers
+      - img
+      - text: HR Administration
+  - listitem:
+    - link "Employee Management":
+      - /url: "/client/#/route/pim.employees({\"filterParameters\":null,\"calledFromMyShortcuts\":null})"
+      - img
+      - text: Employee Management
+  - listitem:
+    - link "Reports and Analytics":
+      - /url: /client/#/route/reports_and_analytics.catalogue
+      - img
+      - text: Reports and Analytics
+  - listitem:
+    - link "Leave":
+      - /url: "/client/#/route/leave.view_leave_list({\"filter\":null})"
+      - img
+      - text: Leave
+  - listitem:
+    - link "Time Tracking":
+      - /url: /client/#/route/time.employee_timesheets
+      - img
+      - text: Time Tracking
+  - listitem:
+    - link "Attendance":
+      - /url: /client/#/route/attendance.late_grace_period
+      - img
+      - text: Attendance
+  - listitem:
+    - link "Onboarding":
+      - /url: /client/#/route/preboarding.preboardingEmployees
+      - img
+      - text: Onboarding
+  - listitem:
+    - link "Goals":
+      - /url: /client/#/route/performance.goals.approved
+      - img
+      - text: Goals
+  - listitem:
+    - link "Performance":
+      - /url: "/client/#/route/performance.view_appraisals_list({\"resetPagination\": true})"
+      - img
+      - text: Performance
+  - listitem:
+    - link "Career Development":
+      - /url: /client/#/route/succession_and_development.list_idp
+      - img
+      - text: Career Development
+  - listitem:
+    - link "request desk Request Desk":
+      - /url: /client/#/route/help_desk.form_types_configuration
+      - img "request desk"
+      - text: Request Desk
+  - listitem:
+    - link "Configurations":
+      - /url: /admin/exportConfiguration
+      - img
+      - text: Configurations
+  - listitem:
+    - link "Management Tools":
+      - /url: /bulkdata/main
+      - img
+      - text: Management Tools
+  - listitem:
+    - link "Surveys New":
+      - /url: "/client/#/route/appbuilder_app.record_list({\"appId\":1,\"applicationFormId\":\"3\",\"listType\":\"list\"})"
+      - img
+      - text: Surveys New
+- banner:
+  - navigation:
+    - list:
+      - listitem: Management Tools
+    - list:
+      - listitem:
+        - link "oxd_logout_round Log Out":
+          - /url: /auth/logout
+        - link "arrow_drop_down":
+          - /url: javascript:void(0)
+    - link "oxd_home_menu":
+      - /url: /client/#/dashboard
+    - link "Bulk Data Upload":
+      - /url: /bulkdata/main
+    - link "License Update":
+      - /url: /license/addLicense
+    - link "Executable Tasks":
+      - /url: /managementtool_notship/viewCronTasks
+    - link "Scheduled Tasks":
+      - /url: /managementtool_notship/viewScheduledCronTasks
+    - list
+    - list:
+      - listitem: ohrm_help
+      - listitem:
+        - link "oxd_shortcut":
+          - /url: javascript:void(0)
+- table:
+  - rowgroup:
+    - row "Task Description History":
+      - columnheader "Task"
+      - columnheader "Description"
+      - columnheader "History"
+  - rowgroup:
+    - row "Attendance Process Attendance Process View history":
+      - cell "Attendance Process":
+        - link "Attendance Process":
+          - /url: ""
+      - cell "Attendance Process"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/11/taskName/Attendance Process
+    - row "Auto Punch Out This task automatically punches out employees who have punch-in records within the specified past duration but have not punched out. View history":
+      - cell "Auto Punch Out":
+        - link "Auto Punch Out":
+          - /url: ""
+      - cell "This task automatically punches out employees who have punch-in records within the specified past duration but have not punched out."
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/38/taskName/Auto Punch Out
+    - row "Clean Logs Data and Tables Remove and Archives logs and clean tables View history":
+      - cell "Clean Logs Data and Tables":
+        - link "Clean Logs Data and Tables":
+          - /url: ""
+      - cell "Remove and Archives logs and clean tables"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/14/taskName/Clean Logs Data and Tables
+    - row "Clear Leave Entitlements Clear all leave Entitlements in the system. View history":
+      - cell "Clear Leave Entitlements":
+        - link "Clear Leave Entitlements":
+          - /url: ""
+      - cell "Clear all leave Entitlements in the system."
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/7/taskName/Clear Leave Entitlements
+    - row "Clear Leave Requests Clear all leave requests in the system. View history":
+      - cell "Clear Leave Requests":
+        - link "Clear Leave Requests":
+          - /url: ""
+      - cell "Clear all leave requests in the system."
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/8/taskName/Clear Leave Requests
+    - row "Clear Notification Queue This will remove all the sent/pending/started emails and push notifications from queue. View history":
+      - cell "Clear Notification Queue":
+        - link "Clear Notification Queue":
+          - /url: ""
+      - cell "This will remove all the sent/pending/started emails and push notifications from queue."
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/6/taskName/Clear Notification Queue
+    - row "Configure Appraisal Acknowledgment Workflow This task is used to enable/disable final review acknowledgment for performance appraisals. View history":
+      - cell "Configure Appraisal Acknowledgment Workflow":
+        - link "Configure Appraisal Acknowledgment Workflow":
+          - /url: ""
+      - cell "This task is used to enable/disable final review acknowledgment for performance appraisals."
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/43/taskName/Configure Appraisal Acknowledgment Workflow
+    - row "Configure Candidate Document E-sign This task is used to enable/disable the e-sign for recruitment candidate documents. View history":
+      - cell "Configure Candidate Document E-sign":
+        - link "Configure Candidate Document E-sign":
+          - /url: ""
+      - cell "This task is used to enable/disable the e-sign for recruitment candidate documents."
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/37/taskName/Configure Candidate Document E-sign
+    - row "Configure Data Warehouse Updates Data Warehouse Api key and url View history":
+      - cell "Configure Data Warehouse":
+        - link "Configure Data Warehouse":
+          - /url: ""
+      - cell "Updates Data Warehouse Api key and url"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/29/taskName/Configure Data Warehouse
+    - row "Configure Final Rating Source This task is used for configuring final rating source for performance appraisals View history":
+      - cell "Configure Final Rating Source":
+        - link "Configure Final Rating Source":
+          - /url: ""
+      - cell "This task is used for configuring final rating source for performance appraisals"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/24/taskName/Configure Final Rating Source
+    - row "Configure Goal Workflow This task is used to enable/disable the Goal Workflow and related email notifications View history":
+      - cell "Configure Goal Workflow":
+        - link "Configure Goal Workflow":
+          - /url: ""
+      - cell "This task is used to enable/disable the Goal Workflow and related email notifications"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/22/taskName/Configure Goal Workflow
+    - row "Configure Password Expiration This task is used to enable/disable password expiration View history":
+      - cell "Configure Password Expiration":
+        - link "Configure Password Expiration":
+          - /url: ""
+      - cell "This task is used to enable/disable password expiration"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/23/taskName/Configure Password Expiration
+    - row "Contact details requests rejection task This task will automatically reject contact details requests. View history":
+      - cell "Contact details requests rejection task":
+        - link "Contact details requests rejection task":
+          - /url: ""
+      - cell "This task will automatically reject contact details requests."
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/20/taskName/Contact details requests rejection task
+    - row "Diagnose Scheduled Tasks Execution Failures Diagnose Scheduled Tasks Execution Failures View history":
+      - cell "Diagnose Scheduled Tasks Execution Failures":
+        - link "Diagnose Scheduled Tasks Execution Failures":
+          - /url: ""
+      - cell "Diagnose Scheduled Tasks Execution Failures"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/21/taskName/Diagnose Scheduled Tasks Execution Failures
+    - row "E-Sign Configuration Configure e-sign vendor (OneSpan or Orange e-Sign) and settings View history":
+      - cell "E-Sign Configuration":
+        - link "E-Sign Configuration":
+          - /url: ""
+      - cell "Configure e-sign vendor (OneSpan or Orange e-Sign) and settings"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/50/taskName/E-Sign Configuration
+    - row "Enable E-Sign for Employee Management Documents Enables/disables e-signature for Employee Management documents View history":
+      - cell "Enable E-Sign for Employee Management Documents":
+        - link "Enable E-Sign for Employee Management Documents":
+          - /url: ""
+      - cell "Enables/disables e-signature for Employee Management documents"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/40/taskName/Enable E-Sign for Employee Management Documents
+    - row "Enable/Disable Automated Appraisal Creation This task will enable/disable auto appraisal creation feature View history":
+      - cell "Enable/Disable Automated Appraisal Creation":
+        - link "Enable/Disable Automated Appraisal Creation":
+          - /url: ""
+      - cell "This task will enable/disable auto appraisal creation feature"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/49/taskName/Enable/Disable Automated Appraisal Creation
+    - row "Execute Scheduled Reports Generate Schedule Reports View history":
+      - cell "Execute Scheduled Reports":
+        - link "Execute Scheduled Reports":
+          - /url: ""
+      - cell "Generate Schedule Reports"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/35/taskName/Execute Scheduled Reports
+    - 'row "Fix Leave Balances: Bulk Fix leave balances of all leave types for all leave periods. View history"':
+      - 'cell "Fix Leave Balances: Bulk"':
+        - 'link "Fix Leave Balances: Bulk"':
+          - /url: ""
+      - cell "Fix leave balances of all leave types for all leave periods."
+      - cell "View history":
+        - link "View history":
+          - /url: "/index.php/managementtool_notship/cronHistory/taskId/5/taskName/Fix Leave Balances: Bulk"
+    - 'row "Fix Leave Balances: Single Leave Type This task will correct leave balances by updating links between leave requests and entitlements. View history"':
+      - 'cell "Fix Leave Balances: Single Leave Type"':
+        - 'link "Fix Leave Balances: Single Leave Type"':
+          - /url: ""
+      - cell "This task will correct leave balances by updating links between leave requests and entitlements."
+      - cell "View history":
+        - link "View history":
+          - /url: "/index.php/managementtool_notship/cronHistory/taskId/3/taskName/Fix Leave Balances: Single Leave Type"
+    - row "Goals and Appraisals Monthly Upload Task This task will upload goals and appraisals from sftp location. View history":
+      - cell "Goals and Appraisals Monthly Upload Task":
+        - link "Goals and Appraisals Monthly Upload Task":
+          - /url: ""
+      - cell "This task will upload goals and appraisals from sftp location."
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/39/taskName/Goals and Appraisals Monthly Upload Task
+    - row "Invalidate Employee Course Certificates This Task Will Invalidate Employee Course Certificates Based on the Certificate Expiry Date View history":
+      - cell "Invalidate Employee Course Certificates":
+        - link "Invalidate Employee Course Certificates":
+          - /url: ""
+      - cell "This Task Will Invalidate Employee Course Certificates Based on the Certificate Expiry Date"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/51/taskName/Invalidate Employee Course Certificates
+    - row "Late Arrival Request Reminder This will check late arrival request count of employee in current calendar month and send notification View history":
+      - cell "Late Arrival Request Reminder":
+        - link "Late Arrival Request Reminder":
+          - /url: ""
+      - cell "This will check late arrival request count of employee in current calendar month and send notification"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/32/taskName/Late Arrival Request Reminder
+    - row "Notify Job/Salary Records Reaching Effective Date Notify Job/Salary Records Reaching Effective Date View history":
+      - cell "Notify Job/Salary Records Reaching Effective Date":
+        - link "Notify Job/Salary Records Reaching Effective Date":
+          - /url: ""
+      - cell "Notify Job/Salary Records Reaching Effective Date"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/36/taskName/Notify Job/Salary Records Reaching Effective Date
+    - row "Onboarding Notification Onboarding Notification View history":
+      - cell "Onboarding Notification":
+        - link "Onboarding Notification":
+          - /url: ""
+      - cell "Onboarding Notification"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/12/taskName/Onboarding Notification
+    - row "Onboarding Quick Notification Onboarding Quick Notification View history":
+      - cell "Onboarding Quick Notification":
+        - link "Onboarding Quick Notification":
+          - /url: ""
+      - cell "Onboarding Quick Notification"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/13/taskName/Onboarding Quick Notification
+    - row "Process Attendance Exceptions Process Attendance Exceptions View history":
+      - cell "Process Attendance Exceptions":
+        - link "Process Attendance Exceptions":
+          - /url: ""
+      - cell "Process Attendance Exceptions"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/47/taskName/Process Attendance Exceptions
+    - row "Process Attendance Sheets This task is used to process Attendance Sheets View history":
+      - cell "Process Attendance Sheets":
+        - link "Process Attendance Sheets":
+          - /url: ""
+      - cell "This task is used to process Attendance Sheets"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/26/taskName/Process Attendance Sheets
+    - row "Process Leave Accrual and Carry Forward This process will process leave accrual and carry over calculations based on a given date. View history":
+      - cell "Process Leave Accrual and Carry Forward":
+        - link "Process Leave Accrual and Carry Forward":
+          - /url: ""
+      - cell "This process will process leave accrual and carry over calculations based on a given date."
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/4/taskName/Process Leave Accrual and Carry Forward
+    - row "Process Leave Notification Process Leave Notification View history":
+      - cell "Process Leave Notification":
+        - link "Process Leave Notification":
+          - /url: ""
+      - cell "Process Leave Notification"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/10/taskName/Process Leave Notification
+    - row "Queue Email Notifications To Be Sent Process notifications and add emails to the queue for sending. View history":
+      - cell "Queue Email Notifications To Be Sent":
+        - link "Queue Email Notifications To Be Sent":
+          - /url: ""
+      - cell "Process notifications and add emails to the queue for sending."
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/2/taskName/Queue Email Notifications To Be Sent
+    - row "RabbitMQ Queue Publishing Publishes messages to Queue Service View history":
+      - cell "RabbitMQ Queue Publishing":
+        - link "RabbitMQ Queue Publishing":
+          - /url: ""
+      - cell "Publishes messages to Queue Service"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/15/taskName/RabbitMQ Queue Publishing
+    - row "RabbitMQ Queue Subscribing Subscribing to RabbitMQ queues to consume messages View history":
+      - cell "RabbitMQ Queue Subscribing":
+        - link "RabbitMQ Queue Subscribing":
+          - /url: ""
+      - cell "Subscribing to RabbitMQ queues to consume messages"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/16/taskName/RabbitMQ Queue Subscribing
+    - row "RAG Queue Population Populate the RAG processing queue with published documents View history":
+      - cell "RAG Queue Population":
+        - link "RAG Queue Population":
+          - /url: ""
+      - cell "Populate the RAG processing queue with published documents"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/46/taskName/RAG Queue Population
+    - row "Recalculate Attendance Pay Codes Recalculate Attendance Pay Codes View history":
+      - cell "Recalculate Attendance Pay Codes":
+        - link "Recalculate Attendance Pay Codes":
+          - /url: ""
+      - cell "Recalculate Attendance Pay Codes"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/41/taskName/Recalculate Attendance Pay Codes
+    - row "Send Notifications This task will send all queued notifications which are in pending status. View history":
+      - cell "Send Notifications":
+        - link "Send Notifications":
+          - /url: ""
+      - cell "This task will send all queued notifications which are in pending status."
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/1/taskName/Send Notifications
+    - row "Sync 321 Forms This will import 321 Forms from completed users to OrangeHRM. View history":
+      - cell "Sync 321 Forms":
+        - link "Sync 321 Forms":
+          - /url: ""
+      - cell "This will import 321 Forms from completed users to OrangeHRM."
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/52/taskName/Sync 321 Forms
+    - row "Task Schedule Execution Task Schedule Execution View history":
+      - cell "Task Schedule Execution":
+        - link "Task Schedule Execution":
+          - /url: ""
+      - cell "Task Schedule Execution"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/48/taskName/Task Schedule Execution
+    - row "Terminate Employment & Update Employee Job Details This process terminates or reactivates employees who have been marked for termination or reactivation on given date and time, and updates job information according to the effective date of the job record. View history":
+      - cell "Terminate Employment & Update Employee Job Details":
+        - link "Terminate Employment & Update Employee Job Details":
+          - /url: ""
+      - cell "This process terminates or reactivates employees who have been marked for termination or reactivation on given date and time, and updates job information according to the effective date of the job record."
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/9/taskName/Terminate Employment & Update Employee Job Details
+    - row "Trigger Async Events This task Triggers a given async event View history":
+      - cell "Trigger Async Events":
+        - link "Trigger Async Events":
+          - /url: ""
+      - cell "This task Triggers a given async event"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/25/taskName/Trigger Async Events
+    - row "Update Geolocation configurations Updates the geolocation API key and URL View history":
+      - cell "Update Geolocation configurations":
+        - link "Update Geolocation configurations":
+          - /url: ""
+      - cell "Updates the geolocation API key and URL"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/28/taskName/Update Geolocation configurations
+    - row "Update Missing Address Updates the attendance extra details address View history":
+      - cell "Update Missing Address":
+        - link "Update Missing Address":
+          - /url: ""
+      - cell "Updates the attendance extra details address"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/27/taskName/Update Missing Address
+    - row "Update Secure Configurations Updates the secure configuration key and value View history":
+      - cell "Update Secure Configurations":
+        - link "Update Secure Configurations":
+          - /url: ""
+      - cell "Updates the secure configuration key and value"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/33/taskName/Update Secure Configurations
+    - row "Zoho Daily Sync This will check hired stage candidates and pull the candidate information to OrangeHRM system View history":
+      - cell "Zoho Daily Sync":
+        - link "Zoho Daily Sync":
+          - /url: ""
+      - cell "This will check hired stage candidates and pull the candidate information to OrangeHRM system"
+      - cell "View history":
+        - link "View history":
+          - /url: /index.php/managementtool_notship/cronHistory/taskId/30/taskName/Zoho Daily Sync
+- heading "RabbitMQ Queue Subscribing" [level=5]
+- paragraph: Start consuming messages from RabbitMQ queue service
+- textbox "Timeout in Seconds*"
+- text: Required Timeout in Seconds
+- emphasis: "*"
+- text: Execute Cancel OrangeHRM 8.1 The Jamaica National Group © 2005 - 2026
+- link "OrangeHRM, Inc":
+  - /url: http://www.orangehrm.com
+- text: . All rights reserved. Profile Settings HR Administration HR Administration HR Administration Employee Management Employee Management Employee Management Reports and Analytics Reports and Analytics Reports and Analytics Leave Leave Leave Time Tracking Time Tracking Time Tracking Attendance Attendance Attendance Onboarding Onboarding Onboarding Goals Goals Goals Performance Performance Performance Career Development Career Development Career Development Request Desk Request Desk Request Desk Configurations Configurations Configurations Management Tools Management Tools Management Tools Surveys New Surveys Surveys New Management Tools External Links Home Help My Shortcuts Profile Settings HR Administration HR Administration HR Administration Employee Management Employee Management Employee Management Reports and Analytics Reports and Analytics Reports and Analytics Leave Leave Leave Time Tracking Time Tracking Time Tracking Attendance Attendance Attendance Onboarding Onboarding Onboarding Goals Goals Goals Performance Performance Performance Career Development Career Development Career Development Request Desk Request Desk Request Desk Configurations Configurations Configurations Management Tools Management Tools Management Tools Surveys New Surveys Surveys New Management Tools Home Help My Shortcuts Profile Settings HR Administration HR Administration HR Administration Employee Management Employee Management Employee Management Reports and Analytics Reports and Analytics Reports and Analytics Leave Leave Leave Time Tracking Time Tracking Time Tracking Attendance Attendance Attendance Onboarding Onboarding Onboarding Goals Goals Goals Performance Performance Performance Career Development Career Development Career Development Request Desk Request Desk Request Desk Configurations Configurations Configurations Management Tools Management Tools Management Tools Surveys New Surveys Surveys New Management Tools Home Help My Shortcuts
