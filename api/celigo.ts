@@ -4,6 +4,13 @@ import { pollUntil } from '../utils/poll';
 /**
  * Celigo integrator.io client — READ + trigger-run only.
  * This framework never modifies integration configuration.
+ *
+ * Endpoint shapes verified live on 2026-07-27:
+ *  - POST /flows/{id}/run           → 200, body includes _jobId
+ *  - GET  /jobs/{jobId}             → job with status/numSuccess/numError...
+ *  - GET  /jobs?_flowId={id}&type=flow → job list, newest first
+ *  - GET  /flows/{id}/errors        → { flowErrors: [{_expOrImpId, numError, ...}] }
+ *  (GET /flows/{id}/jobs does NOT exist — returns 404.)
  */
 
 export interface CeligoJob {
@@ -30,31 +37,49 @@ export class CeligoApi {
     return { Authorization: `Bearer ${this.token}`, 'Content-Type': 'application/json' };
   }
 
-  /** Trigger an on-demand run of the Sync Employees flow. */
-  async runSyncEmployeesFlow(): Promise<void> {
+  /** Trigger an on-demand run; returns the job id to track. */
+  async runSyncEmployeesFlow(): Promise<string> {
     const res = await this.request.post(`${this.base}/flows/${this.flowId}/run`, {
       headers: this.headers(),
     });
     if (!res.ok()) {
       throw new Error(`Flow run trigger failed: ${res.status()} ${await res.text()}`);
     }
+    const body = (await res.json()) as { _jobId?: string };
+    if (!body._jobId) throw new Error(`Run trigger returned no _jobId: ${JSON.stringify(body).slice(0, 200)}`);
+    return body._jobId;
   }
 
-  /** Latest jobs for the flow, newest first. */
+  async getJob(jobId: string): Promise<CeligoJob> {
+    const res = await this.request.get(`${this.base}/jobs/${jobId}`, { headers: this.headers() });
+    if (!res.ok()) throw new Error(`Job fetch failed: ${res.status()} ${await res.text()}`);
+    return (await res.json()) as CeligoJob;
+  }
+
+  /** Wait for a specific job (from runSyncEmployeesFlow) to reach a terminal state. */
+  async waitForJob(jobId: string, timeoutMs = 8 * 60_000): Promise<CeligoJob> {
+    return pollUntil(
+      async () => {
+        const job = await this.getJob(jobId);
+        return ['completed', 'failed', 'canceled'].includes(job.status) ? job : null;
+      },
+      { timeoutMs, intervalMs: 10_000, label: `job ${jobId} terminal state` },
+    );
+  }
+
+  /** Recent jobs for the flow (newest first) — includes scheduled runs. */
   async getRecentJobs(): Promise<CeligoJob[]> {
-    const res = await this.request.get(`${this.base}/flows/${this.flowId}/jobs`, {
-      headers: this.headers(),
-    });
-    if (!res.ok()) {
-      throw new Error(`Job list failed: ${res.status()} ${await res.text()}`);
-    }
+    const res = await this.request.get(
+      `${this.base}/jobs?_flowId=${this.flowId}&type=flow`,
+      { headers: this.headers() },
+    );
+    if (!res.ok()) throw new Error(`Job list failed: ${res.status()} ${await res.text()}`);
     return (await res.json()) as CeligoJob[];
   }
 
   /**
-   * Wait for a flow run created after `since` to finish — whether we triggered
-   * it or the 5-min schedule did. The test doesn't care WHICH run consumed the
-   * event; it identifies its record afterwards via the trace key.
+   * Schedule-immunity fallback: wait for ANY run created after `since`
+   * (ours or the 5-min scheduler's) to finish.
    */
   async waitForRunAfter(since: Date, timeoutMs = 8 * 60_000): Promise<CeligoJob> {
     return pollUntil(
@@ -73,18 +98,15 @@ export class CeligoApi {
   }
 
   /**
-   * Open errors for the flow — used to assert clean runs and, in negative
-   * tests, to find the expected [Data] validation error for our employee.
-   * Trace key format: "<empNumber>_<employeeId>" (from the insert import).
+   * Open-error summary per flow step: [{_expOrImpId, numError, lastErrorAt}].
+   * Trace key format for drill-down: "<empNumber>_<employeeId>".
    */
-  async getFlowErrors(): Promise<Array<Record<string, unknown>>> {
+  async getFlowErrorSummary(): Promise<Array<Record<string, unknown>>> {
     const res = await this.request.get(`${this.base}/flows/${this.flowId}/errors`, {
       headers: this.headers(),
     });
-    if (!res.ok()) {
-      throw new Error(`Flow errors fetch failed: ${res.status()} ${await res.text()}`);
-    }
+    if (!res.ok()) throw new Error(`Flow errors fetch failed: ${res.status()} ${await res.text()}`);
     const body = await res.json();
-    return Array.isArray(body) ? body : (body.errors ?? []);
+    return (body.flowErrors ?? []) as Array<Record<string, unknown>>;
   }
 }

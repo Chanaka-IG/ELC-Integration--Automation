@@ -68,16 +68,16 @@ test('new employee in OHRM syncs to BizPay with all mapped fields', async ({ pag
     expect(event.employeeSSN).toBe(emp.ssn); // → TRN
   });
 
-  const flowRunStart = new Date();
-
   await test.step('Celigo: flow run consumes the event', async () => {
-    await celigo.runSyncEmployeesFlow();
-    const job = await celigo.waitForRunAfter(flowRunStart);
-    expect(job.status, `run ${job._id} should complete`).toBe('completed');
-    expect(job.numError ?? 0, `run ${job._id} should have no errors`).toBe(0);
+    const jobId = await celigo.runSyncEmployeesFlow(); // returns _jobId directly
+    const job = await celigo.waitForJob(jobId);
+    expect(job.status, `run ${jobId} should complete`).toBe('completed');
+    expect(job.numError ?? 0, `run ${jobId} should have no errors`).toBe(0);
+    expect(job.numSuccess ?? 0, `run ${jobId} should process our employee`).toBeGreaterThan(0);
   });
 
   await test.step('BizPay: employee exists with correct field values', async () => {
+    test.skip(!process.env.BIZPAY_URL, 'BizPay verification out of scope (BIZPAY_URL not set)');
     const record = await pollUntil(
       () => bizpay.findEmployeeByNumber(payrollId, emp.employeeId),
       { timeoutMs: 60_000, label: `BizPay employee ${emp.employeeId}` },
@@ -98,9 +98,11 @@ test('new employee in OHRM syncs to BizPay with all mapped fields', async ({ pag
   });
 
   await test.step('Idempotency: a second run creates no duplicate', async () => {
-    const secondRunStart = new Date();
-    await celigo.runSyncEmployeesFlow();
-    await celigo.waitForRunAfter(secondRunStart);
-    // TODO: assert BizPay still returns exactly one employee with this number
+    const jobId = await celigo.runSyncEmployeesFlow();
+    const job = await celigo.waitForJob(jobId);
+    expect(job.status).toBe('completed');
+    // event already consumed → nothing to process
+    expect(job.numSuccess ?? 0, 'second run should find no pending events').toBe(0);
+    // TODO(bizpay-scope): also assert exactly one BizPay record once in scope
   });
 });
