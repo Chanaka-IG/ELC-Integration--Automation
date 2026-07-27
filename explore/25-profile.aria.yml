@@ -1,0 +1,179 @@
+- link "oxd_prev":
+  - /url: javascript:void(0)
+- img
+- text: ohrm_settings System Admin search
+- combobox:
+  - textbox "Search"
+- list:
+  - listitem:
+    - link "HR Administration":
+      - /url: "#/admin/systemUsers"
+      - img
+      - text: HR Administration
+  - listitem:
+    - link "Employee Management":
+      - /url: "#/pim/employees"
+      - img
+      - text: Employee Management
+  - listitem:
+    - link "Reports and Analytics":
+      - /url: "#/reports_and_analytics/catalogue"
+      - img
+      - text: Reports and Analytics
+  - listitem:
+    - link "Leave":
+      - /url: "#/leave/view_leave_list"
+      - img
+      - text: Leave
+  - listitem:
+    - link "Time Tracking":
+      - /url: "#/time/employee_timesheets"
+      - img
+      - text: Time Tracking
+  - listitem:
+    - link "Attendance":
+      - /url: "#/attendance/late_graceperiod"
+      - img
+      - text: Attendance
+  - listitem:
+    - link "Onboarding":
+      - /url: "#/preboarding/preboardingEmployees"
+      - img
+      - text: Onboarding
+  - listitem:
+    - link "Goals":
+      - /url: "#/performance/goals/approved"
+      - img
+      - text: Goals
+  - listitem:
+    - link "Performance":
+      - /url: "#/performance/appraisals_list"
+      - img
+      - text: Performance
+  - listitem:
+    - link "Career Development":
+      - /url: "#/succession_and_development/idp_list"
+      - img
+      - text: Career Development
+  - listitem:
+    - link "request desk Request Desk":
+      - /url: "#/help_desk/form_type_configuration"
+      - img "request desk"
+      - text: Request Desk
+  - listitem:
+    - link "Configurations":
+      - /url: /client/#/noncore/admin/exportConfiguration
+      - img
+      - text: Configurations
+  - listitem:
+    - link "Management Tools":
+      - /url: /client/#/noncore/bulkdata/main
+      - img
+      - text: Management Tools
+  - listitem:
+    - link "Surveys New":
+      - /url: "#/app/1/3/list"
+      - img
+      - text: Surveys New
+- banner:
+  - navigation:
+    - list:
+      - listitem
+      - listitem: Employee Management
+      - listitem: /
+      - listitem: Employee List
+      - listitem: /
+      - listitem: Jason Adams
+    - list:
+      - listitem:
+        - link "oxd_logout_round Log Out":
+          - /url: /auth/logout
+        - link "arrow_drop_down":
+          - /url: javascript:void(0)
+      - listitem
+    - link "oxd_home_menu":
+      - /url: "#/dashboard"
+    - link "arrow_back":
+      - /url: "#/pim/employees"
+    - link "Profile":
+      - /url: "#/pim/employees/19448/profile"
+    - link "Personal Details":
+      - /url: "#/pim/employees/19448/personal_details"
+    - link "Job":
+      - /url: "#/pim/employees/19448/job"
+    - link "Salary":
+      - /url: "#/pim/employees/19448/salary"
+    - link "Contact Details":
+      - /url: "#/pim/employees/19448/contact_details"
+    - link "Social Media Details":
+      - /url: "#/pim/employees/19448/social_media"
+    - link "Created Documents":
+      - /url: "#/pim/employees/19448/created_documents"
+    - link "Emergency Contacts":
+      - /url: "#/pim/employees/19448/emergency_contact"
+    - link "Dependents":
+      - /url: "#/pim/employees/19448/employee_dependents"
+    - link "Immigration":
+      - /url: "#/pim/employees/19448/employee_immigrations"
+    - link "Report-to":
+      - /url: "#/pim/employees/19448/employee_reportto"
+    - link "Qualifications":
+      - /url: "#/pim/employees/19448/qualifications"
+    - link "Memberships":
+      - /url: "#/pim/employees/19448/employee_memberships"
+    - link "Direct Deposit":
+      - /url: "#/pim/employees/19448/direct_deposit"
+    - link "Union Retroactive Payment...":
+      - /url: "#/pim/employees/19448/employee_pim_tab/281"
+    - link "Beneficiary":
+      - /url: "#/pim/employees/19448/employee_pim_tab/284"
+    - link "Banking Details":
+      - /url: "#/pim/employees/19448/employee_pim_tab/285"
+    - link "Union Retroactive 2nd Pay...":
+      - /url: "#/pim/employees/19448/employee_pim_tab/292"
+    - link "Union Retroactive 2nd Pay...":
+      - /url: "#/pim/employees/19448/employee_pim_tab/293"
+    - link "NWU Retroactive Payment(0...":
+      - /url: "#/pim/employees/19448/employee_pim_tab/294"
+    - link "Retroactive Payment Compu...":
+      - /url: "#/pim/employees/19448/employee_pim_tab/295"
+    - link "Retro Payment 2023":
+      - /url: "#/pim/employees/19448/employee_pim_tab/297"
+    - link "2023 Retro Payment":
+      - /url: "#/pim/employees/19448/employee_pim_tab/298"
+    - link "BizPay Integration - Sync...":
+      - /url: "#/pim/employees/19448/employee_pim_tab/397"
+    - text: More more_vert
+    - img
+    - text: search
+    - textbox "Search"
+    - list:
+      - listitem: ohrm_help
+      - listitem: oxd_shortcut
+- text: settings
+- img
+- text: Quick Access settings
+- img
+- text: Leave Balance settings
+- img
+- text: About
+- img
+- button:
+  - img
+- img
+- text: Basic Info
+- img
+- text: "Job Status: Active settings"
+- img
+- text: Leave List settings timelapse Time At Work Loading settings
+- img
+- text: Goals/OKRs widgets Employee Dashboard Configuration
+- list:
+  - listitem: Admin Configurations
+  - listitem: My Widgets
+- button "Cancel"
+- button "Save"
+- text: ohrm_settings OrangeHRM 8.1 The Jamaica National Group © 2005 - 2026
+- link "OrangeHRM, Inc":
+  - /url: http://www.orangehrm.com
+- text: ". All rights reserved. {{title | translate}} {{title | translate}} {{ vm.forcedBackButton.tooltip | translate }} {{menuTooltip | translate}} {{menuTooltip | translate}} {{menuTooltip | translate}} {{menuTooltip | translate}} {{menuTooltip | translate}} {{menuTooltip | translate}}"

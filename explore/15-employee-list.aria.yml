@@ -1,0 +1,142 @@
+- link "oxd_prev":
+  - /url: javascript:void(0)
+- img
+- text: ohrm_settings System Admin search
+- combobox:
+  - textbox "Search"
+- list:
+  - listitem:
+    - link "HR Administration":
+      - /url: "#/admin/systemUsers"
+      - img
+      - text: HR Administration
+  - listitem:
+    - link "Employee Management":
+      - /url: "#/pim/employees"
+      - img
+      - text: Employee Management
+  - listitem:
+    - link "Reports and Analytics":
+      - /url: "#/reports_and_analytics/catalogue"
+      - img
+      - text: Reports and Analytics
+  - listitem:
+    - link "Leave":
+      - /url: "#/leave/view_leave_list"
+      - img
+      - text: Leave
+  - listitem:
+    - link "Time Tracking":
+      - /url: "#/time/employee_timesheets"
+      - img
+      - text: Time Tracking
+  - listitem:
+    - link "Attendance":
+      - /url: "#/attendance/late_graceperiod"
+      - img
+      - text: Attendance
+  - listitem:
+    - link "Onboarding":
+      - /url: "#/preboarding/preboardingEmployees"
+      - img
+      - text: Onboarding
+  - listitem:
+    - link "Goals":
+      - /url: "#/performance/goals/approved"
+      - img
+      - text: Goals
+  - listitem:
+    - link "Performance":
+      - /url: "#/performance/appraisals_list"
+      - img
+      - text: Performance
+  - listitem:
+    - link "Career Development":
+      - /url: "#/succession_and_development/idp_list"
+      - img
+      - text: Career Development
+  - listitem:
+    - link "request desk Request Desk":
+      - /url: "#/help_desk/form_type_configuration"
+      - img "request desk"
+      - text: Request Desk
+  - listitem:
+    - link "Configurations":
+      - /url: /client/#/noncore/admin/exportConfiguration
+      - img
+      - text: Configurations
+  - listitem:
+    - link "Management Tools":
+      - /url: /client/#/noncore/bulkdata/main
+      - img
+      - text: Management Tools
+  - listitem:
+    - link "Surveys New":
+      - /url: "#/app/1/3/list"
+      - img
+      - text: Surveys New
+- banner:
+  - navigation:
+    - list:
+      - listitem
+      - listitem: Employee Management
+    - list:
+      - listitem:
+        - link "oxd_logout_round Log Out":
+          - /url: /auth/logout
+        - link "arrow_drop_down":
+          - /url: javascript:void(0)
+      - listitem
+    - link "oxd_home_menu":
+      - /url: "#/dashboard"
+    - link "Employee List":
+      - /url: "#/pim/employees"
+    - link "Candidate List":
+      - /url: "#/pim/candidate_list"
+    - link "Directory":
+      - /url: "#/corporate_directory/directory"
+    - link "Buzz":
+      - /url: /client/#/buzz/home
+    - text: Announcements oxd_menu_down Organization Chart oxd_menu_down Competencies oxd_menu_down Qualifications oxd_menu_down Manage Data oxd_menu_down Configurations oxd_menu_down
+    - link "Nationalities":
+      - /url: "#/admin/nationalities"
+    - text: Assets oxd_menu_down
+    - link "iCalendar Feeds":
+      - /url: "#/pim/icalendar_feed"
+    - link "Dashboard":
+      - /url: "#/dashboard"
+    - text: Purge Records oxd_menu_down
+    - list:
+      - listitem:
+        - textbox "Employee Name"
+      - listitem:
+        - link "ohrm_search":
+          - /url: ""
+      - listitem:
+        - link "oxd_filter":
+          - /url: ""
+    - list:
+      - listitem: ohrm_help
+      - listitem: oxd_shortcut
+- table:
+  - rowgroup:
+    - row "Employee Id Namearrow_upward Job Title Employment Status Sub Unit Location Supervisor":
+      - columnheader
+      - columnheader "Employee Id"
+      - columnheader "Namearrow_upward"
+      - columnheader "Job Title"
+      - columnheader "Employment Status"
+      - columnheader "Sub Unit"
+      - columnheader "Location"
+      - columnheader "Supervisor"
+  - rowgroup
+- list:
+  - listitem: Rows per page
+  - listitem:
+    - text: ▼
+    - textbox: "50"
+  - listitem: 0 - 0 of 0
+- text: OrangeHRM 8.1 The Jamaica National Group © 2005 - 2026
+- link "OrangeHRM, Inc":
+  - /url: http://www.orangehrm.com
+- text: . All rights reserved.

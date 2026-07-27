@@ -1,0 +1,98 @@
+[
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "menuQuickSearch_menuQuickSearch",
+    "label": "",
+    "value": "",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "employee_name_quick_filter_value",
+    "label": "",
+    "value": "",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "122",
+    "label": "Last Sync Date (UTC)",
+    "value": "",
+    "visible": true
+  },
+  {
+    "tag": "SELECT",
+    "type": "select-one",
+    "id": "",
+    "label": "Last Sync Date (UTC)",
+    "value": "6",
+    "visible": true
+  },
+  {
+    "tag": "SELECT",
+    "type": "select-one",
+    "id": "",
+    "label": "Last Sync Date (UTC)",
+    "value": "2026",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "123",
+    "label": "Last Sync Time (UTC)",
+    "value": "",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "",
+    "label": "Last Sync Status",
+    "value": "-- Select --",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "radio",
+    "id": "126_No",
+    "label": "Employee Exists in BizPay?",
+    "value": "No",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "radio",
+    "id": "126_Yes",
+    "label": "Employee Exists in BizPay?",
+    "value": "Yes",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "checkbox",
+    "id": "127Yes",
+    "label": "Re-sync Employee",
+    "value": "on",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "checkbox",
+    "id": "128Yes",
+    "label": "Skip-sync",
+    "value": "on",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "131",
+    "label": "Bizpay Employee Unique Identifier",
+    "value": "",
+    "visible": true
+  }
+]

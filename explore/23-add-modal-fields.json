@@ -1,0 +1,142 @@
+[
+  {
+    "tag": "INPUT",
+    "type": "file",
+    "id": "employeePicture",
+    "name": "",
+    "classes": "photo-attachment-preview-input ng-pristine ng-untouched ng-v",
+    "label": "",
+    "required": false,
+    "visible": false
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "first-name-box",
+    "name": "",
+    "classes": "form-control first-name-box ng-pristine ng-untouched ng-vali",
+    "label": "Employee Full Name*",
+    "required": false,
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "middle-name-box",
+    "name": "",
+    "classes": "form-control middle-name-box ng-pristine ng-untouched ng-val",
+    "label": "Employee Full Name*",
+    "required": false,
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "last-name-box",
+    "name": "",
+    "classes": "form-control ng-pristine ng-untouched ng-valid ng-empty",
+    "label": "Employee Full Name*",
+    "required": false,
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "hidden",
+    "id": "",
+    "name": "",
+    "classes": "ng-valid ng-touched ng-dirty ng-not-empty ng-valid-schema-fo",
+    "label": "Employee Full Name*",
+    "required": false,
+    "visible": false
+  },
+  {
+    "tag": "INPUT",
+    "type": "checkbox",
+    "id": "autoGenerateEmployeeId",
+    "name": "",
+    "classes": "custom-control-input ng-pristine ng-untouched ng-valid ng-no",
+    "label": "",
+    "required": false,
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "joinedDate",
+    "name": "dateTextInput",
+    "classes": "form-control truncate ng-pristine ng-untouched ng-valid ng-v",
+    "label": "Joined Date*",
+    "required": false,
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "P1866202330",
+    "name": "dateHolder",
+    "classes": "datepicker original ng-pristine ng-untouched ng-valid picker",
+    "label": "Joined Date*",
+    "required": false,
+    "visible": false
+  },
+  {
+    "tag": "SELECT",
+    "type": "select-one",
+    "id": "",
+    "name": "",
+    "classes": "picker__select--month browser-default",
+    "label": "Joined Date*",
+    "required": false,
+    "visible": false
+  },
+  {
+    "tag": "SELECT",
+    "type": "select-one",
+    "id": "",
+    "name": "",
+    "classes": "picker__select--year browser-default",
+    "label": "Joined Date*",
+    "required": false,
+    "visible": false
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "",
+    "name": "",
+    "classes": "placeholder dropdown-field-focus-element",
+    "label": "",
+    "required": false,
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "checkbox",
+    "id": "initiatePreboarding",
+    "name": "",
+    "classes": "custom-control-input ng-pristine ng-untouched ng-valid ng-em",
+    "label": "",
+    "required": false,
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "",
+    "name": "",
+    "classes": "form-control  ng-hide",
+    "label": "(This is an irreversible action.)",
+    "required": false,
+    "visible": false
+  },
+  {
+    "tag": "INPUT",
+    "type": "checkbox",
+    "id": "hasLoginDetails",
+    "name": "",
+    "classes": "custom-control-input ng-pristine ng-untouched ng-valid ng-em",
+    "label": "",
+    "required": false,
+    "visible": true
+  }
+]

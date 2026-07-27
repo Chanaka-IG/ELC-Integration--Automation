@@ -1,54 +1,67 @@
-import { Page } from '@playwright/test';
-import { OhrmEmployeeInput } from '../../oracle/ohrm-to-bizpay';
+import { Page, expect } from '@playwright/test';
 
 /**
- * The employee's integration custom fields — the sync "routing switches":
- *   Payroll Name (cust121)          — required; selects target BizPay payroll
- *   Skip-sync    (cust128)          — MUST stay empty or the employee is filtered out
- *   BizPay Employee Exists (cust126)— empty/No routes to the INSERT path
- *   BizPay Unique Id (cust131)      — empty routes to the INSERT path
- *   Last Sync Date/Time/Status/Message (cust122-125) — write-back assertions
+ * "BizPay Integration - Sync Information" custom tab (pim tab id 397).
+ * URL: /client/#/pim/employees/{empNumber}/employee_pim_tab/397
+ * Selectors verified live on 2026-07-27 (input ids = custom field ids):
+ *   #122 Last Sync Date (UTC)    #123 Last Sync Time (UTC)
+ *   Last Sync Status             (custom dropdown, no id — label-anchored)
+ *   #126_Yes / #126_No           "Employee Exists in BizPay?" radios
+ *   #127Yes                      "Re-sync Employee" checkbox
+ *   #128Yes                      "Skip-sync" checkbox
+ *   #131                         "Bizpay Employee Unique Identifier"
  *
- * TODO(explore): confirm which custom tab hosts these fields on the QA
- * instance and capture real selectors + the exact tab name.
+ * NOTE: "Payroll Name" (cust121) is NOT on this tab — it is a dropdown on
+ * the JOB tab (see AddEmployeePage.fillJobDetails).
  */
 export class IntegrationTabPage {
   constructor(private page: Page) {}
 
-  async setPayrollName(emp: OhrmEmployeeInput): Promise<void> {
-    // TODO(selector): navigate to the custom tab, select Payroll Name option
-    await this.openCustomTab();
-    await this.selectDropdown('Payroll Name', emp.payrollName);
-    await this.page.getByRole('button', { name: 'Save' }).first().click();
+  async open(empNumber: string): Promise<void> {
+    await this.page.goto(`/client/#/pim/employees/${empNumber}/employee_pim_tab/397`);
+    await this.page.locator('#122').waitFor({ state: 'visible', timeout: 60_000 });
   }
 
-  /** Read the write-back fields for post-sync assertions. */
-  async readSyncStatus(): Promise<{
+  /** Write-back fields — the post-sync assertion target. */
+  async readSyncStatus(empNumber: string): Promise<{
     lastSyncDate: string;
     lastSyncTime: string;
     lastSyncStatus: string;
-    lastSyncMessage: string;
+    employeeExistsInBizpay: boolean;
+    bizpayUniqueId: string;
   }> {
-    await this.openCustomTab();
-    // TODO(selector): read the four fields
-    throw new Error('Not implemented — needs live-UI exploration');
+    await this.open(empNumber);
+    const statusInput = this.page
+      .locator('.row:has(label:text-is("Last Sync Status")) input, [class*=field]:has(label:text-is("Last Sync Status")) input')
+      .first();
+    return {
+      lastSyncDate: await this.page.locator('#122').inputValue(),
+      lastSyncTime: await this.page.locator('#123').inputValue(),
+      lastSyncStatus: await statusInput.inputValue(),
+      employeeExistsInBizpay: await this.page.locator('#126_Yes').isChecked(),
+      bizpayUniqueId: await this.page.locator('#131').inputValue(),
+    };
   }
 
-  /** Used by teardown so deleted test employees never re-enter the queue. */
-  async setSkipSync(value: string): Promise<void> {
-    await this.openCustomTab();
-    // TODO(selector)
-    throw new Error('Not implemented — needs live-UI exploration');
+  /**
+   * Set Skip-sync — used by teardown BEFORE deleting a test employee so the
+   * deletion never re-enters the sync queue.
+   */
+  async setSkipSync(empNumber: string, value: boolean): Promise<void> {
+    await this.open(empNumber);
+    const checkbox = this.page.locator('#128Yes');
+    if ((await checkbox.isChecked()) !== value) {
+      await checkbox.click({ force: true });
+      await this.page.getByRole('button', { name: /^save$/i }).first().click();
+      await this.page.waitForLoadState('networkidle').catch(() => {});
+    }
   }
 
-  private async openCustomTab(): Promise<void> {
-    // TODO(selector): exact tab name, e.g. "BizPay" / "Integration"
-    await this.page.getByRole('link', { name: /bizpay|integration/i }).click();
-  }
-
-  private async selectDropdown(label: string, value: string): Promise<void> {
-    const group = this.page.locator(`.oxd-input-group:has-text("${label}")`);
-    await group.locator('.oxd-select-text').click();
-    await this.page.getByRole('option', { name: value }).click();
+  /** Guard: a fresh add-path employee must have empty routing fields. */
+  async assertReadyForInsertPath(empNumber: string): Promise<void> {
+    const s = await this.readSyncStatus(empNumber);
+    expect(s.employeeExistsInBizpay, 'Employee Exists in BizPay must not be Yes').toBe(false);
+    expect(s.bizpayUniqueId, 'BizPay Unique Id must be empty for insert path').toBe('');
+    expect(await this.page.locator('#128Yes').isChecked(), 'Skip-sync must be off').toBe(false);
   }
 }

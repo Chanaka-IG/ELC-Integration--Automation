@@ -38,8 +38,11 @@ export function buildEmployee(overrides: EmployeeOverrides = {}): OhrmEmployeeIn
     subUnit: 'SET-ME-department-existing-in-bizpay',
     jobTitle: 'SET-ME-jobtitle-existing-in-bizpay',
     employmentStatus: 'SET-ME-category-existing-in-bizpay',
-    otherId: 'A123456', // → NIS (letter + 6 digits)
-    ssn: '121012298', // → TRN (9 digits; this sample passes the mod-11 check)
+    // TODO(env): confirm a valid Location for QA (e.g. "name_102")
+    location: 'name_102',
+    otherId: 'A123456', // → BizPay NIS (letter + 6 digits)
+    ssn: '121012298', // → BizPay TRN (9 digits; passes the mod-11 check)
+    nisNumber: 'A123456', // UI-only "NIS Number" field (not synced)
     workEmail: `qa.add.${uniq}@example.com`.toLowerCase(),
     mobile: '5551234567',
     street1: 'QA Street One',
@@ -63,6 +66,7 @@ export function buildMinimalEmployee(overrides: EmployeeOverrides = {}): OhrmEmp
     dateOfBirth: full.dateOfBirth,
     joinedDate: full.joinedDate,
     subUnit: full.subUnit,
+    location: full.location, // required by the Add Employee modal
     payrollName: full.payrollName,
     ...overrides,
   };

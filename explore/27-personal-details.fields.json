@@ -1,0 +1,154 @@
+[
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "menuQuickSearch_menuQuickSearch",
+    "label": "",
+    "value": "",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "employee_name_quick_filter_value",
+    "label": "",
+    "value": "",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "firstName",
+    "label": "First Name*",
+    "value": "Jason",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "middleName",
+    "label": "Middle Name",
+    "value": "",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "lastName",
+    "label": "Last Name*",
+    "value": "Adams",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "employeeId",
+    "label": "Employee Id*",
+    "value": "19448",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "otherId",
+    "label": "Other Id",
+    "value": "",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "ssn",
+    "label": "TRN*",
+    "value": "134",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "sin",
+    "label": "NIS Number*",
+    "value": "56",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "emp_birthday",
+    "label": "Date of Birth*",
+    "value": "1977-06-01",
+    "visible": true
+  },
+  {
+    "tag": "SELECT",
+    "type": "select-one",
+    "id": "",
+    "label": "Date of Birth*",
+    "value": "5",
+    "visible": true
+  },
+  {
+    "tag": "SELECT",
+    "type": "select-one",
+    "id": "",
+    "label": "Date of Birth*",
+    "value": "1977",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "",
+    "label": "Marital Status*",
+    "value": "Single",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "",
+    "label": "Gender*",
+    "value": "Male",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "",
+    "label": "Nationality*",
+    "value": "Afghan",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "licenseNo",
+    "label": "Driver's License Number",
+    "value": "",
+    "visible": true
+  },
+  {
+    "tag": "INPUT",
+    "type": "text",
+    "id": "emp_dri_lice_exp_date",
+    "label": "License Expiry Date",
+    "value": "",
+    "visible": true
+  },
+  {
+    "tag": "SELECT",
+    "type": "select-one",
+    "id": "",
+    "label": "License Expiry Date",
+    "value": "6",
+    "visible": true
+  },
+  {
+    "tag": "SELECT",
+    "type": "select-one",
+    "id": "",
+    "label": "License Expiry Date",
+    "value": "2026",
+    "visible": true
+  }
+]

@@ -30,19 +30,20 @@ test('new employee in OHRM syncs to BizPay with all mapped fields', async ({ pag
   // payroll_id = the part of Payroll Name before '_' (e.g. "685_BIZ... - JN" → "685")
   const payrollId = emp.payrollName.split('_')[0];
 
-  await test.step('OHRM: add employee with all mapped fields', async () => {
-    const login = new LoginPage(page);
-    const pim = new AddEmployeePage(page);
-    const integrationTab = new IntegrationTabPage(page);
+  const pim = new AddEmployeePage(page);
+  const integrationTab = new IntegrationTabPage(page);
 
-    await login.loginAsSysadmin(); // sysadmin performs all OHRM actions
-    await pim.addEmployee(emp);
-    await pim.fillPersonalDetails(emp);
-    await pim.fillJobDetails(emp);
-    await pim.fillContactDetails(emp);
-    // Custom tab LAST and completely — partial saves after the consumer run
-    // would generate extra update events and muddy the "pure add" scenario.
-    await integrationTab.setPayrollName(emp);
+  await test.step('OHRM: add employee with all mapped fields', async () => {
+    await new LoginPage(page).loginAsSysadmin(); // sysadmin performs all OHRM actions
+    await pim.addEmployee(emp); // modal: names, employee id, joined date, location
+    await pim.fillPersonalDetails(emp); // DOB, gender, Other Id (→NIS), TRN
+    await pim.fillJobDetails(emp); // job title, sub unit, status, PAYROLL NAME
+    await pim.fillContactDetails(emp); // address, mobile, work email
+  });
+
+  await test.step('OHRM: BizPay tab routing fields are insert-ready', async () => {
+    // Exists=No/empty + Unique Id empty + Skip-sync off → insert path
+    await integrationTab.assertReadyForInsertPath(pim.empNumber!);
   });
 
   await test.step('OHRM: trigger RabbitMQ consumer', async () => {
@@ -88,10 +89,12 @@ test('new employee in OHRM syncs to BizPay with all mapped fields', async ({ pag
     expect(diffs.filter((d) => !d.pass), `Field mismatches:\n${report}`).toEqual([]);
   });
 
-  await test.step('OHRM: write-back sync status is Success', async () => {
-    // TODO(explore): enable once IntegrationTabPage.readSyncStatus is implemented
-    // const status = await integrationTab.readSyncStatus();
-    // expect(status.lastSyncStatus).toBe('Success');
+  await test.step('OHRM: write-back sync status is Successful', async () => {
+    const status = await integrationTab.readSyncStatus(pim.empNumber!);
+    expect(status.lastSyncStatus).toBe('Successful');
+    expect(status.employeeExistsInBizpay, 'Exists in BizPay flips to Yes').toBe(true);
+    expect(status.bizpayUniqueId, 'BizPay unique id written back').not.toBe('');
+    expect(status.lastSyncDate).toBeTruthy();
   });
 
   await test.step('Idempotency: a second run creates no duplicate', async () => {

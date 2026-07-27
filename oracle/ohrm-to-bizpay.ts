@@ -26,10 +26,15 @@ export interface OhrmEmployeeInput {
   subUnit: string;
   jobTitle?: string;
   employmentStatus?: string;
-  /** OHRM "Other ID" → BizPay NIS (format: 1 uppercase letter + 6 digits) */
+  /** REQUIRED by the Add Employee modal on this build (searchable dropdown) */
+  location: string;
+  /** OHRM "Other Id" → BizPay NIS (format: 1 uppercase letter + 6 digits) */
   otherId?: string;
-  /** OHRM "SSN" → BizPay TRN (9 digits, mod-11 checksum) */
+  /** OHRM field labelled "TRN" (id #ssn) → BizPay TRN (9 digits, mod-11) */
   ssn?: string;
+  /** UI field "NIS Number" (id #sin) — NOT read by the integration (NIS
+   *  comes from otherId). Fill it anyway to satisfy client-side validation. */
+  nisNumber?: string;
   workEmail?: string;
   mobile?: string;
   street1?: string;
