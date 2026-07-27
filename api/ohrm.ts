@@ -3,6 +3,12 @@ import { APIRequestContext } from '@playwright/test';
 /**
  * OrangeHRM API client.
  *
+ * Auth: OAuth2 client_credentials — mirrors the Celigo connection's iClient
+ * exactly (verified from "[JN] [BIZPAY] [4.0] - OrangeHRM OAuth Client"):
+ *   POST {base}/oauth/issueToken  (credentials in body)  → Bearer token
+ * Tokens are minted on demand and cached until shortly before expiry;
+ * no static token is stored anywhere.
+ *
  * The changed-employee report is the EXACT endpoint the Celigo flow's page
  * generator calls — verifying against it proves the OHRM half of the pipeline
  * (add → async event → RabbitMQ consumer → report) independently of Celigo.
@@ -17,15 +23,39 @@ export interface ChangeEvent {
 }
 
 export class OhrmApi {
+  private accessToken: string | null = null;
+  private tokenExpiresAt = 0;
+
   constructor(
     private request: APIRequestContext,
     private baseUrl = process.env.OHRM_URL!,
-    private token = process.env.OHRM_API_TOKEN!,
+    private clientId = process.env.OHRM_CLIENT_ID!,
+    private clientSecret = process.env.OHRM_CLIENT_SECRET!,
   ) {}
 
-  private headers() {
-    // TODO(auth): confirm scheme once token is provided (Bearer vs session cookie)
-    return { Authorization: `Bearer ${this.token}` };
+  /** Mint (or reuse) a client_credentials access token. */
+  private async getToken(): Promise<string> {
+    if (this.accessToken && Date.now() < this.tokenExpiresAt) return this.accessToken;
+
+    const res = await this.request.post(`${this.baseUrl}/oauth/issueToken`, {
+      form: {
+        grant_type: 'client_credentials',
+        client_id: this.clientId,
+        client_secret: this.clientSecret,
+      },
+    });
+    if (!res.ok()) {
+      throw new Error(`OHRM token request failed: ${res.status()} ${await res.text()}`);
+    }
+    const body = (await res.json()) as { access_token: string; expires_in?: number };
+    this.accessToken = body.access_token;
+    // refresh 60s before expiry; default to 5 min if expires_in is absent
+    this.tokenExpiresAt = Date.now() + ((body.expires_in ?? 300) - 60) * 1000;
+    return this.accessToken;
+  }
+
+  private async headers() {
+    return { Authorization: `Bearer ${await this.getToken()}` };
   }
 
   /**
@@ -44,7 +74,7 @@ export class OhrmApi {
     });
     const res = await this.request.get(
       `${this.baseUrl}/api/reports/Changed_Employee_Information_Export_Report?${params}`,
-      { headers: this.headers() },
+      { headers: await this.headers() },
     );
     if (!res.ok()) {
       throw new Error(`Change report request failed: ${res.status()} ${await res.text()}`);
