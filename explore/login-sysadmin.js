@@ -3,7 +3,7 @@ const { chromium } = require('@playwright/test');
 const fs = require('fs');
 
 const BASE = 'https://8101jnb1nw-temp14-kord.orangehrm.com';
-const USER = '_ohrmSysAdmin_';
+const USER = process.env.OHRM_SYSADMIN_USER || '_ohrmSysAdmin_';
 const PASS = process.argv[2];
 if (!PASS) {
   console.error('usage: node explore/login-sysadmin.js <password>');
