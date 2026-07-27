@@ -18,10 +18,7 @@ export class LoginPage {
     await this.page.waitForURL((url) => !url.pathname.includes('/auth/login'));
   }
 
-  async loginAsAdmin(): Promise<void> {
-    await this.login(process.env.OHRM_ADMIN_USER!, process.env.OHRM_ADMIN_PASS!);
-  }
-
+  /** All test actions (PIM entry + RabbitMQ trigger) run as the sysadmin. */
   async loginAsSysadmin(): Promise<void> {
     await this.login(process.env.OHRM_SYSADMIN_USER!, process.env.OHRM_SYSADMIN_PASS!);
   }

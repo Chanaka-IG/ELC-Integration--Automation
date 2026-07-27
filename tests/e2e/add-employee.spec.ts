@@ -35,7 +35,7 @@ test('new employee in OHRM syncs to BizPay with all mapped fields', async ({ pag
     const pim = new AddEmployeePage(page);
     const integrationTab = new IntegrationTabPage(page);
 
-    await login.loginAsAdmin();
+    await login.loginAsSysadmin(); // sysadmin performs all OHRM actions
     await pim.addEmployee(emp);
     await pim.fillPersonalDetails(emp);
     await pim.fillJobDetails(emp);
@@ -45,12 +45,8 @@ test('new employee in OHRM syncs to BizPay with all mapped fields', async ({ pag
     await integrationTab.setPayrollName(emp);
   });
 
-  await test.step('OHRM: trigger RabbitMQ consumer (sysadmin)', async () => {
-    const sysPage = await page.context().newPage();
-    const login = new LoginPage(sysPage);
-    await login.loginAsSysadmin();
-    await new SysAdminPage(sysPage).runRabbitMqConsumer();
-    await sysPage.close();
+  await test.step('OHRM: trigger RabbitMQ consumer', async () => {
+    await new SysAdminPage(page).runRabbitMqConsumer();
   });
 
   await test.step('OHRM: change event recorded and queue-ready', async () => {
