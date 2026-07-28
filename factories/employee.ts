@@ -34,12 +34,13 @@ export function buildEmployee(overrides: EmployeeOverrides = {}): OhrmEmployeeIn
     gender: 'Male',
     dateOfBirth: '1990-01-15',
     joinedDate: new Date().toISOString().slice(0, 10),
-    // TODO(env): replace with real master data confirmed on BOTH systems
-    subUnit: 'SET-ME-department-existing-in-bizpay',
-    jobTitle: 'SET-ME-jobtitle-existing-in-bizpay',
-    employmentStatus: 'SET-ME-category-existing-in-bizpay',
-    // TODO(env): confirm a valid Location for QA (e.g. "name_102")
+    // Master data provided by QA (2026-07-27)
+    subUnit: 'test',
+    jobTitle: 'Test one',
+    jobCategory: 'Assistant General Manager',
     location: 'name_102',
+    maritalStatus: 'Single',
+    nationality: 'Afghan',
     otherId: 'A123456', // → BizPay NIS (letter + 6 digits)
     ssn: '121012298', // → BizPay TRN (9 digits; passes the mod-11 check)
     nisNumber: 'A123456', // UI-only "NIS Number" field (not synced)
@@ -48,8 +49,8 @@ export function buildEmployee(overrides: EmployeeOverrides = {}): OhrmEmployeeIn
     street1: 'QA Street One',
     street2: 'QA Street Two',
     city: 'Kingston',
-    // TODO(env): replace with the real payroll option used in QA
-    payrollName: 'SET-ME 685_BIZPAY4718 - JN Bank LTD',
+    // Proven-to-sync payroll option (employee 19456 synced Successful with it)
+    payrollName: '685_BIZPAY4718 - JN Bank LTD',
     bankAccount: { type: 'Savings', branch: '---', number: '565566565' },
     ...overrides,
   };

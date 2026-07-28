@@ -26,6 +26,12 @@ export interface OhrmEmployeeInput {
   subUnit: string;
   jobTitle?: string;
   employmentStatus?: string;
+  /** OHRM "Job Category" (Job tab) — not read by the BizPay integration */
+  jobCategory?: string;
+  /** Required* on Personal Details save (not synced) */
+  maritalStatus?: string;
+  /** Required* on Personal Details save (not synced) */
+  nationality?: string;
   /** REQUIRED by the Add Employee modal on this build (searchable dropdown) */
   location: string;
   /** OHRM "Other Id" → BizPay NIS (format: 1 uppercase letter + 6 digits) */

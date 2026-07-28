@@ -65,6 +65,8 @@ export class AddEmployeePage {
     await this.page.locator('#emp_birthday').fill(emp.dateOfBirth);
     await this.page.keyboard.press('Escape'); // dismiss datepicker popup
     await this.selectLabelledDropdown('Gender', emp.gender);
+    if (emp.maritalStatus) await this.selectLabelledDropdown('Marital Status', emp.maritalStatus);
+    if (emp.nationality) await this.selectLabelledDropdown('Nationality', emp.nationality);
     await this.saveSection('Personal Details');
   }
 
@@ -72,6 +74,7 @@ export class AddEmployeePage {
   async fillJobDetails(emp: OhrmEmployeeInput): Promise<void> {
     await this.gotoTab('job');
     if (emp.jobTitle) await this.selectLabelledDropdown('Job Title', emp.jobTitle);
+    if (emp.jobCategory) await this.selectLabelledDropdown('Job Category', emp.jobCategory);
     if (emp.employmentStatus)
       await this.selectLabelledDropdown('Employment Status', emp.employmentStatus);
     await this.selectLabelledDropdown('Sub Unit', emp.subUnit);
@@ -100,10 +103,10 @@ export class AddEmployeePage {
 
   /** Custom searchable dropdown inside the Add Employee modal (Location). */
   private async selectModalDropdown(value: string): Promise<void> {
-    const trigger = this.page.locator('.dropdown-field-focus-element').first();
-    await trigger.click({ force: true });
-    await this.page.keyboard.type(value.slice(0, 20));
-    await this.page.getByText(value, { exact: true }).first().click();
+    const dialog = this.page.getByRole('dialog');
+    await dialog.locator('.dropdown-field-focus-element').first().click({ force: true });
+    // options render with role=option inside the dialog
+    await dialog.getByRole('option', { name: value, exact: true }).click();
   }
 
   /** Dropdown identified by its field label (Job/Personal Details tabs). */
@@ -112,7 +115,17 @@ export class AddEmployeePage {
       .locator(`.row:has(label:text-is("${label}")), [class*=field]:has(label:text-is("${label}"))`)
       .first();
     await field.locator('input, .select-wrapper').first().click({ force: true });
-    await this.page.getByText(value, { exact: true }).first().click();
+    // prefer proper option roles; fall back to visible dropdown list items
+    const option = this.page.getByRole('option', { name: value, exact: true }).first();
+    if (await option.isVisible().catch(() => false)) {
+      await option.click();
+    } else {
+      await this.page
+        .locator(`.dropdown-content li:visible, ul[class*=dropdown] li:visible`)
+        .filter({ hasText: value })
+        .first()
+        .click();
+    }
   }
 
   private async fillLabelled(label: string, value: string): Promise<void> {
