@@ -92,6 +92,24 @@ export class OhrmApi {
       ) ?? null
     );
   }
+
+  /**
+   * Find an update event for an already-synced employee. Edits on different
+   * PIM tabs record differently-named events (e.g. "Update Personal Details"),
+   * so match on anything that is not the initial Add-Employee event.
+   */
+  async findUpdateEvent(
+    employeeId: string,
+    fromGmt: string,
+    toGmt: string,
+  ): Promise<ChangeEvent | null> {
+    const events = await this.getChangeEvents(fromGmt, toGmt);
+    return (
+      events.find(
+        (e) => e.employeeId === employeeId && e.async_event_display_name !== 'Add Employee',
+      ) ?? null
+    );
+  }
 }
 
 /** Format a Date as the GMT string the report filter expects. */
