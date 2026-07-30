@@ -19,7 +19,7 @@ OHRM UI (add employee)  →  RabbitMQ consumer (sysadmin UI)  →  change report
 | `api/` | API clients: OHRM change report, Celigo (run flow / poll jobs / errors), BizPay verification |
 | `factories/employee.ts` | Unique, traceable test employees (`QA-ADD-<runId>`) |
 | `utils/` | Polling (no sleeps) and oracle-driven field diffing |
-| `tests/e2e/` | Happy-path end-to-end spec |
+| `tests/e2e/` | Happy-path end-to-end specs (add / insert path, update path) |
 | `tests/negative/` | Negative case matrix (README lists the plan) |
 
 ## Setup
@@ -49,6 +49,9 @@ npm test
 ## Status / TODO
 
 - [x] Framework scaffold, mapping oracle, API clients, e2e spec
+- [x] Update-path spec (`tests/e2e/update-employee.spec.ts`): edit an
+      already-synced employee, verify the UPDATE leg — in-place PUT, no
+      duplicate, unchanged fields untouched, Unique Id stable
 - [ ] Live-UI exploration pass: confirm selectors in `pages/ohrm/*` (needs QA
       instance URL + admin & sysadmin credentials)
 - [ ] `SysAdminPage.runRabbitMqConsumer()` — instance-specific trigger

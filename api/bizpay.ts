@@ -22,6 +22,15 @@ export class BizpayApi {
     payrollId: string,
     employeeNumber: string,
   ): Promise<Record<string, unknown> | null> {
+    const matches = await this.findAllEmployeesByNumber(payrollId, employeeNumber);
+    return matches[0] ?? null;
+  }
+
+  /** All records for an employeeNumber — update tests assert exactly one. */
+  async findAllEmployeesByNumber(
+    payrollId: string,
+    employeeNumber: string,
+  ): Promise<Array<Record<string, unknown>>> {
     const res = await this.request.get(`${this.base}/api/Payroll/${payrollId}/Employee`, {
       headers: this.headers(),
     });
@@ -29,7 +38,7 @@ export class BizpayApi {
       throw new Error(`BizPay employee list failed: ${res.status()} ${await res.text()}`);
     }
     const employees = (await res.json()) as Array<Record<string, unknown>>;
-    return employees.find((e) => e.employeeNumber === employeeNumber) ?? null;
+    return employees.filter((e) => e.employeeNumber === employeeNumber);
   }
 
   /**
