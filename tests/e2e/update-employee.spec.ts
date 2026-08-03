@@ -61,15 +61,13 @@ test('editing a synced employee in OHRM updates the BizPay record without duplic
 
   await test.step('Setup — OHRM: add employee with all mapped fields', async () => {
     await new LoginPage(page).loginAsSysadmin();
-    await pim.addEmployee(emp);
-    await pim.fillPersonalDetails(emp);
-    await pim.fillJobDetails(emp);
-    await pim.fillContactDetails(emp);
+    await pim.addEmployee(emp); // 6-step wizard
+    await pim.setPayrollName(emp); // cust121 is not in the wizard — Job tab only
   });
 
   await test.step('Setup — sync employee to BizPay (insert path)', async () => {
     const setupStart = new Date();
-    await sysadmin.runRabbitMqConsumer();
+    await sysadmin.runRabbitMqSync();
     await pollUntil(
       () =>
         ohrm.findAddEvent(
@@ -110,8 +108,8 @@ test('editing a synced employee in OHRM updates the BizPay record without duplic
     expect(s.bizpayUniqueId, 'Unique Id unchanged by the OHRM edit').toBe(syncedUniqueId);
   });
 
-  await test.step('OHRM: trigger RabbitMQ consumer', async () => {
-    await sysadmin.runRabbitMqConsumer();
+  await test.step('OHRM: publish then consume the RabbitMQ queue', async () => {
+    await sysadmin.runRabbitMqSync();
   });
 
   await test.step('OHRM: update event recorded with the new values', async () => {

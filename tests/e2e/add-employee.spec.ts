@@ -35,10 +35,9 @@ test('new employee in OHRM syncs to BizPay with all mapped fields', async ({ pag
 
   await test.step('OHRM: add employee with all mapped fields', async () => {
     await new LoginPage(page).loginAsSysadmin(); // sysadmin performs all OHRM actions
-    await pim.addEmployee(emp); // modal: names, employee id, joined date, location
-    await pim.fillPersonalDetails(emp); // DOB, gender, Other Id (→NIS), TRN
-    await pim.fillJobDetails(emp); // job title, sub unit, status, PAYROLL NAME
-    await pim.fillContactDetails(emp); // address, mobile, work email
+    // the 6-step wizard covers personal, job, contact and the mandatory list steps
+    await pim.addEmployee(emp);
+    await pim.setPayrollName(emp); // cust121 is not in the wizard — Job tab only
   });
 
   await test.step('OHRM: BizPay tab routing fields are insert-ready', async () => {
@@ -46,8 +45,8 @@ test('new employee in OHRM syncs to BizPay with all mapped fields', async ({ pag
     await integrationTab.assertReadyForInsertPath(pim.empNumber!);
   });
 
-  await test.step('OHRM: trigger RabbitMQ consumer', async () => {
-    await new SysAdminPage(page).runRabbitMqConsumer();
+  await test.step('OHRM: publish then consume the RabbitMQ queue', async () => {
+    await new SysAdminPage(page).runRabbitMqSync();
   });
 
   await test.step('OHRM: change event recorded and queue-ready', async () => {

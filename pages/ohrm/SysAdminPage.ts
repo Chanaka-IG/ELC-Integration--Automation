@@ -27,8 +27,16 @@ const TASK_IDS: Record<string, number> = {
 export class SysAdminPage {
   constructor(private page: Page) {}
 
-  /** The RabbitMQ step of the manual QA procedure. */
-  async runRabbitMqConsumer(timeoutSeconds = 15): Promise<void> {
+  /**
+   * The RabbitMQ step of the manual QA procedure — BOTH tasks, in this order.
+   *
+   * Publishing puts the pending change events on the queue; Subscribing drains
+   * the queue into the change-event store the Celigo export reads. Running only
+   * the subscriber consumes a queue nothing has published to yet, so the new
+   * employee's event is missed until the scheduled publisher happens to run.
+   */
+  async runRabbitMqSync(timeoutSeconds = 15): Promise<void> {
+    await this.executeTask('RabbitMQ Queue Publishing', timeoutSeconds);
     await this.executeTask('RabbitMQ Queue Subscribing', timeoutSeconds);
   }
 
