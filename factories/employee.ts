@@ -1,4 +1,4 @@
-import { OhrmEmployeeInput } from '../oracle/ohrm-to-bizpay';
+import { OhrmEmployeeInput, WizardOnlyInput } from '../oracle/ohrm-to-bizpay';
 
 /**
  * Test-data factory. Every employee gets a unique, traceable id so it can be
@@ -15,6 +15,37 @@ export function makeRunId(): string {
 }
 
 export interface EmployeeOverrides extends Partial<OhrmEmployeeInput> {}
+
+/**
+ * Wizard-only master data — every value confirmed to exist in the QA instance's
+ * dropdowns on 2026-07-31. None of it reaches BizPay (see WizardOnlyInput);
+ * it only exists so the mandatory wizard steps can be completed.
+ */
+function buildWizardInput(uniq: string): WizardOnlyInput {
+  return {
+    salutation: 'Mr',
+    workSchedule: 'Default Work Schedule',
+    attendanceBasis: 'Work Schedule',
+    contractType: 'Fixed-Term Contract',
+    group: 'Jamaica National Group Ltd. (MHC)',
+    company: 'FHC',
+    employeeWorkLocation: 'Telecommute',
+    province: 'Kingston',
+    country: 'Jamaica',
+    personalEmail: `qa.add.${uniq}.personal@jngroup.com`.toLowerCase(),
+    emergencyContact: { name: 'QA Emergency', relationship: 'Spouse', mobile: '8765550101' },
+    supervisor: { name: 'emp_firstname_1097', reportingMethod: 'Direct' },
+    workExperience: { company: 'QA Previous Employer', jobTitle: 'QA Analyst' },
+    education: {
+      level: 'AAAA',
+      institute: 'QA University',
+      major: 'Testing',
+      year: '2015',
+      startDate: '2011-09-01',
+      endDate: '2015-06-30',
+    },
+  };
+}
 
 /**
  * A fully-populated, valid employee (happy-path "all mapped fields" case).
@@ -38,17 +69,20 @@ export function buildEmployee(overrides: EmployeeOverrides = {}): OhrmEmployeeIn
     subUnit: 'test',
     jobTitle: 'Test one',
     jobCategory: 'Assistant General Manager',
+    employmentStatus: 'Active',
     location: 'name_102',
     maritalStatus: 'Single',
     nationality: 'Afghan',
     otherId: 'A123456', // → BizPay NIS (letter + 6 digits)
     ssn: '121012298', // → BizPay TRN (9 digits; passes the mod-11 check)
     nisNumber: 'A123456', // UI-only "NIS Number" field (not synced)
-    workEmail: `qa.add.${uniq}@example.com`.toLowerCase(),
+    // a real company domain, matching how the field is used in production
+    workEmail: `qa.add.${uniq}@jngroup.com`.toLowerCase(),
     mobile: '5551234567',
     street1: 'QA Street One',
     street2: 'QA Street Two',
     city: 'Kingston',
+    wizard: buildWizardInput(uniq),
     // Proven-to-sync payroll option (employee 19456 synced Successful with it)
     payrollName: '685_BIZPAY4718 - JN Bank LTD',
     bankAccount: { type: 'Savings', branch: '---', number: '565566565' },

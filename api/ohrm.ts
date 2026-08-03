@@ -1,4 +1,5 @@
 import { APIRequestContext } from '@playwright/test';
+import { NonRetryableError } from '../utils/poll';
 
 /**
  * OrangeHRM API client.
@@ -6,8 +7,9 @@ import { APIRequestContext } from '@playwright/test';
  * Auth: OAuth2 client_credentials — mirrors the Celigo connection's iClient
  * exactly (verified from "[JN] [BIZPAY] [4.0] - OrangeHRM OAuth Client"):
  *   POST {base}/oauth/issueToken  (credentials in body)  → Bearer token
- * Tokens are minted on demand and cached until shortly before expiry;
- * no static token is stored anywhere.
+ * Tokens are minted on demand and cached until shortly before expiry.
+ * Setting OHRM_ACCESS_TOKEN overrides minting and uses that token as-is — for
+ * when OHRM has temporarily blocked the token endpoint.
  *
  * The changed-employee report is the EXACT endpoint the Celigo flow's page
  * generator calls — verifying against it proves the OHRM half of the pipeline
@@ -35,6 +37,11 @@ export class OhrmApi {
 
   /** Mint (or reuse) a client_credentials access token. */
   private async getToken(): Promise<string> {
+    // Escape hatch: a token supplied out-of-band is used as-is. Needed when
+    // OHRM has temporarily blocked /oauth/issueToken but still honours a valid
+    // Bearer token — otherwise the run cannot proceed at all.
+    if (process.env.OHRM_ACCESS_TOKEN) return process.env.OHRM_ACCESS_TOKEN;
+
     if (this.accessToken && Date.now() < this.tokenExpiresAt) return this.accessToken;
 
     const res = await this.request.post(`${this.baseUrl}/oauth/issueToken`, {
@@ -45,7 +52,16 @@ export class OhrmApi {
       },
     });
     if (!res.ok()) {
-      throw new Error(`OHRM token request failed: ${res.status()} ${await res.text()}`);
+      const body = await res.text();
+      // OHRM blocks a client after repeated auth traffic; polling through that
+      // block only extends it, so fail the run immediately and say why
+      if (res.status() === 403 && body.includes('temporarily_blocked')) {
+        throw new NonRetryableError(
+          'OHRM has temporarily blocked this client from authenticating ' +
+            `(${res.status()} ${body}). Wait for the block to lapse before re-running.`,
+        );
+      }
+      throw new Error(`OHRM token request failed: ${res.status()} ${body}`);
     }
     const body = (await res.json()) as { access_token: string; expires_in?: number };
     this.accessToken = body.access_token;

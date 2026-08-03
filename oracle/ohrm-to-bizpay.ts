@@ -49,6 +49,42 @@ export interface OhrmEmployeeInput {
   /** Custom field 121 — format "685_BIZPAY4718 - JN Bank LTD" */
   payrollName: string;
   bankAccount?: { type: 'Savings' | 'Chequing'; branch: string; number: string };
+  /** Fields the Add Employee wizard demands but the integration never reads. */
+  wizard?: WizardOnlyInput;
+}
+
+/**
+ * Required by the 6-step Add Employee wizard, NOT part of the BizPay mapping —
+ * none of these appear in MAPPINGS. They exist so the wizard can be completed:
+ * steps 1-3 refuse to advance while a mandatory field is empty, and steps 4-6
+ * refuse to advance until their list holds at least one record.
+ */
+export interface WizardOnlyInput {
+  /** Personal Details custom field, mandatory on this instance */
+  salutation?: string;
+  workSchedule?: string;
+  attendanceBasis?: string;
+  contractType?: string;
+  group?: string;
+  company?: string;
+  employeeWorkLocation?: string;
+  /** Contact Details "Parish/State/Province" (#province) */
+  province?: string;
+  country?: string;
+  /** Contact Details "Personal Email" (#emp_oth_email) */
+  personalEmail?: string;
+  emergencyContact?: { name: string; relationship: string; mobile: string };
+  /** Supervisor name must match an existing employee for the autocomplete */
+  supervisor?: { name: string; reportingMethod: string };
+  workExperience?: { company: string; jobTitle: string };
+  education?: {
+    level: string;
+    institute: string;
+    major: string;
+    year: string;
+    startDate: string;
+    endDate: string;
+  };
 }
 
 export interface FieldMapping {
