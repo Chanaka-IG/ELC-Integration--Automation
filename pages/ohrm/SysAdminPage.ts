@@ -48,10 +48,15 @@ export class SysAdminPage {
     const frame = await this.taskFrame('managementtool_notship/viewCronTasks');
 
     await frame.getByRole('link', { name: taskName, exact: true }).click();
-    const timeoutField = frame.locator('#taskExecutionModal #timeout');
-    await timeoutField.waitFor({ state: 'visible' });
-    await timeoutField.fill(String(timeoutSeconds));
-    await frame.locator('#saveTaskType').click();
+    // Modal content is injected per-task via AJAX: Subscribing has a #timeout
+    // field, Publishing has no parameters at all — only fill when present.
+    const modal = frame.locator('#taskExecutionModal');
+    await modal.locator('#saveTaskType').waitFor({ state: 'visible' });
+    const timeoutField = modal.locator('#timeout');
+    if (await timeoutField.isVisible()) {
+      await timeoutField.fill(String(timeoutSeconds));
+    }
+    await modal.locator('#saveTaskType').click();
 
     // The task runs synchronously for up to timeoutSeconds — give it room,
     // then confirm via cron history that OUR run (sysadmin user) succeeded.
