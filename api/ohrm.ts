@@ -78,12 +78,19 @@ export class OhrmApi {
    * Query the changed-employee report for a time window (GMT), mirroring the
    * Celigo export's query exactly (report_type=3, include_fields_changed=1).
    */
-  async getChangeEvents(fromGmt: string, toGmt: string): Promise<ChangeEvent[]> {
+  async getChangeEvents(
+    fromGmt: string,
+    toGmt: string,
+    separateEvents = false,
+  ): Promise<ChangeEvent[]> {
     const params = new URLSearchParams({
       'filter[report_type]': '3',
       'filter[event_recorded_date_time_from]': fromGmt,
       'filter[event_recorded_date_time_to]': toGmt,
-      'filter[separate_emps_by_change_event]': '0',
+      // 0 (Celigo's mode) collapses to ONE row per employee named after the
+      // latest change — a later edit (e.g. the Job-tab payroll name) masks
+      // the Add Employee event name. Event-name assertions need 1.
+      'filter[separate_emps_by_change_event]': separateEvents ? '1' : '0',
       'filter[include_fields_changed]': '1',
       'page[offset]': '0',
       'page[limit]': '100',
@@ -101,7 +108,7 @@ export class OhrmApi {
 
   /** Find the Add-Employee event for a specific test employee, if recorded. */
   async findAddEvent(employeeId: string, fromGmt: string, toGmt: string): Promise<ChangeEvent | null> {
-    const events = await this.getChangeEvents(fromGmt, toGmt);
+    const events = await this.getChangeEvents(fromGmt, toGmt, true);
     return (
       events.find(
         (e) => e.employeeId === employeeId && e.async_event_display_name === 'Add Employee',
@@ -119,7 +126,7 @@ export class OhrmApi {
     fromGmt: string,
     toGmt: string,
   ): Promise<ChangeEvent | null> {
-    const events = await this.getChangeEvents(fromGmt, toGmt);
+    const events = await this.getChangeEvents(fromGmt, toGmt, true);
     return (
       events.find(
         (e) => e.employeeId === employeeId && e.async_event_display_name !== 'Add Employee',

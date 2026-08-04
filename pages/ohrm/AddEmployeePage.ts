@@ -298,11 +298,25 @@ export class AddEmployeePage {
    */
   private async openListItemModal(subTrigger?: string, itemLabel?: string): Promise<void> {
     await this.dismissToasts();
-    await this.page.locator('a.btn-floating.btn-large').click();
-    if (subTrigger && itemLabel) {
-      await this.page.locator(subTrigger).getByText(itemLabel, { exact: true }).click();
-    } else if (subTrigger) {
-      await this.page.locator(subTrigger).click();
+    const fab = this.page.locator('a.btn-floating.btn-large');
+    if (subTrigger) {
+      const sub = itemLabel
+        ? this.page.locator(subTrigger).getByText(itemLabel, { exact: true })
+        : this.page.locator(subTrigger);
+      // Materialize FAB menus expand on hover; clicking the main FAB then
+      // TOGGLES the menu shut again (hover opened it, the click closed it),
+      // leaving the sub-button animating away — hover first, click only if
+      // the trigger is the dropdown kind that needs an actual click.
+      await fab.hover();
+      try {
+        await sub.waitFor({ state: 'visible', timeout: 3_000 });
+      } catch {
+        await fab.click();
+        await sub.waitFor({ state: 'visible', timeout: 10_000 });
+      }
+      await sub.click();
+    } else {
+      await fab.click();
     }
     await this.page.getByRole('dialog').waitFor({ state: 'visible', timeout: 30_000 });
   }
@@ -331,7 +345,41 @@ export class AddEmployeePage {
   async setPayrollName(emp: OhrmEmployeeInput): Promise<void> {
     await this.gotoTab('job');
     await this.selectDropdown('Payroll Name', emp.payrollName);
-    await this.saveSection('Job');
+    // The Job tab stacks several sections that each have their own Save; the
+    // page-wide first Save submits a DIFFERENT section (without cust121) and
+    // the value silently never persists. The Job-details card's own Save is
+    // an <a>, not a <button>, so target the Save inside the nearest container
+    // that also holds the Payroll Name field.
+    const card = this.page
+      .locator('[id="121"]')
+      .locator(
+        'xpath=ancestor::*[.//a[normalize-space()="Save"] or .//button[normalize-space()="Save"]][1]',
+      );
+    // the save request is issued asynchronously after the click (and may pop
+    // a confirmation dialog first) — reloading too early cancels it entirely
+    const saveResponse = this.page
+      .waitForResponse(
+        (r) =>
+          ['PUT', 'POST'].includes(r.request().method()) &&
+          /\/api\/employees\/\d+\//.test(r.url()),
+        { timeout: 20_000 },
+      )
+      .catch(() => null);
+    await card.locator('a:text-is("Save"), button:text-is("Save")').first().click();
+    const confirmDialog = this.page.getByRole('dialog');
+    try {
+      await confirmDialog.waitFor({ state: 'visible', timeout: 3_000 });
+      await confirmDialog.getByRole('button', { name: /^(save|yes|confirm|ok)$/i }).click();
+    } catch {
+      // no confirmation dialog appeared — the save fires directly
+    }
+    await saveResponse;
+    // the save reports nothing on failure — reload and prove it stuck
+    await this.page.reload();
+    await this.page.waitForLoadState('networkidle').catch(() => {});
+    await expect(this.page.locator('[id="121"] input')).toHaveValue(emp.payrollName, {
+      timeout: 30_000,
+    });
   }
 
   /** Personal Details tab: DOB, gender, Other Id (→NIS), TRN, NIS Number. */

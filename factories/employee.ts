@@ -52,6 +52,16 @@ function buildWizardInput(uniq: string): WizardOnlyInput {
  * subUnit / jobTitle / employmentStatus / payrollName defaults MUST be values
  * confirmed to exist in the QA BizPay company — set once per environment here.
  */
+// BizPay rejects names with anything but letters ("Names can only contain
+// letters"), so uniqueness in name fields is spelled out as letters; the
+// employeeId keeps the exact digits for tracing.
+const toLetters = (digits: string) =>
+  digits
+    .replace(/\D/g, '')
+    .split('')
+    .map((d) => 'ABCDEFGHIJ'[Number(d)])
+    .join('');
+
 export function buildEmployee(overrides: EmployeeOverrides = {}): OhrmEmployeeInput {
   seq += 1;
   const runId = makeRunId();
@@ -59,8 +69,8 @@ export function buildEmployee(overrides: EmployeeOverrides = {}): OhrmEmployeeIn
 
   return {
     employeeId: `QA-ADD-${uniq}`,
-    firstName: `Qa${seq}`,
-    lastName: `Add-${runId}`,
+    firstName: `Qa${toLetters(String(seq)) || 'A'}`,
+    lastName: `Add${toLetters(runId)}`,
     middleName: 'Test',
     gender: 'Male',
     dateOfBirth: '1990-01-15',
