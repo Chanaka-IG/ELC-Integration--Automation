@@ -52,6 +52,7 @@ export class AddEmployeePage {
 
   /** Run the whole Add Employee wizard; leaves the browser on the new profile. */
   async addEmployee(emp: OhrmEmployeeInput): Promise<void> {
+    //passing data for wizard
     await this.submitAddEmployeeModal(emp);
     await this.wizardPersonalDetails(emp);
     await this.wizardJob(emp);
