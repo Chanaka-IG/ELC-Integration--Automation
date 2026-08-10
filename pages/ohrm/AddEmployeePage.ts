@@ -243,9 +243,22 @@ export class AddEmployeePage {
     const deadline = Date.now() + timeoutMs;
     let attempts = 0;
     while (Date.now() < deadline) {
+      // A submit that already landed is indistinguishable from one still
+      // pending until the route is checked: the wizard's Save disables itself
+      // while it submits and then detaches on navigation, so the NEXT click
+      // attempt fails on a button that did its job. Check before clicking.
+      if (route.test(this.page.url())) return;
+
       attempts += 1;
       await this.dismissToasts();
-      await click();
+      try {
+        await click();
+      } catch {
+        // The click itself can fail for the same reason — "element is not
+        // enabled" / "element was detached from the DOM" is what a successful
+        // submit looks like from the clicker's side. Never let that escape the
+        // retry loop; the route check below is the real verdict.
+      }
       try {
         await this.page.waitForURL(route, { timeout: 15_000 });
         return;

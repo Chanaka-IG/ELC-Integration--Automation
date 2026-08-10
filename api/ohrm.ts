@@ -27,20 +27,35 @@ export interface ChangeEvent {
 export class OhrmApi {
   private accessToken: string | null = null;
   private tokenExpiresAt = 0;
+  /** Set once OHRM_ACCESS_TOKEN has been rejected — stop preferring it. */
+  private suppliedTokenRejected = false;
+
+  private baseUrl: string;
 
   constructor(
     private request: APIRequestContext,
-    private baseUrl = process.env.OHRM_URL!,
+    baseUrl = process.env.OHRM_URL!,
     private clientId = process.env.OHRM_CLIENT_ID!,
     private clientSecret = process.env.OHRM_CLIENT_SECRET!,
-  ) {}
+  ) {
+    // OHRM_URL is written with a trailing slash in some environments, which
+    // would make every path a double slash ("…com//oauth/issueToken").
+    this.baseUrl = baseUrl.replace(/\/+$/, '');
+  }
 
   /** Mint (or reuse) a client_credentials access token. */
   private async getToken(): Promise<string> {
-    // Escape hatch: a token supplied out-of-band is used as-is. Needed when
+    // Escape hatch: a token supplied out-of-band is preferred. Needed when
     // OHRM has temporarily blocked /oauth/issueToken but still honours a valid
     // Bearer token — otherwise the run cannot proceed at all.
-    if (process.env.OHRM_ACCESS_TOKEN) return process.env.OHRM_ACCESS_TOKEN;
+    //
+    // It is only PREFERRED, never mandatory: a stale OHRM_ACCESS_TOKEN left in
+    // .env used to dead-end every run with 401 expired_token, because minting
+    // was skipped unconditionally. Once the supplied token is rejected we fall
+    // back to client_credentials for the rest of the run.
+    if (process.env.OHRM_ACCESS_TOKEN && !this.suppliedTokenRejected) {
+      return process.env.OHRM_ACCESS_TOKEN;
+    }
 
     if (this.accessToken && Date.now() < this.tokenExpiresAt) return this.accessToken;
 
@@ -75,6 +90,28 @@ export class OhrmApi {
   }
 
   /**
+   * GET with the bearer token, retrying once on 401.
+   *
+   * A token can be rejected mid-run for two reasons: OHRM_ACCESS_TOKEN was
+   * already stale when the run started, or a minted token expired sooner than
+   * `expires_in` claimed. Both look identical here — drop whatever token was
+   * used, mint a fresh one, and replay the request once.
+   */
+  private async authedGet(url: string) {
+    let res = await this.request.get(url, { headers: await this.headers() });
+    if (res.status() !== 401) return res;
+
+    if (process.env.OHRM_ACCESS_TOKEN && !this.suppliedTokenRejected) {
+      this.suppliedTokenRejected = true; // stop using the supplied token
+    }
+    this.accessToken = null;
+    this.tokenExpiresAt = 0;
+
+    res = await this.request.get(url, { headers: await this.headers() });
+    return res;
+  }
+
+  /**
    * Query the changed-employee report for a time window (GMT), mirroring the
    * Celigo export's query exactly (report_type=3, include_fields_changed=1).
    */
@@ -95,9 +132,8 @@ export class OhrmApi {
       'page[offset]': '0',
       'page[limit]': '100',
     });
-    const res = await this.request.get(
+    const res = await this.authedGet(
       `${this.baseUrl}/api/reports/Changed_Employee_Information_Export_Report?${params}`,
-      { headers: await this.headers() },
     );
     if (!res.ok()) {
       throw new Error(`Change report request failed: ${res.status()} ${await res.text()}`);
