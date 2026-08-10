@@ -39,7 +39,12 @@ export function diffEmployee(
 
 function normalize(v: unknown): string {
   if (v === null || v === undefined || v === '') return '<empty>';
-  return String(v);
+  const s = String(v);
+  // BizPay returns dates as full timestamps ("1990-01-15T00:00:00") while the
+  // oracle expresses them the way they are entered in OHRM ("1990-01-15") —
+  // compare the calendar day only, or every date field reads as a mismatch.
+  const asDate = s.match(/^(\d{4}-\d{2}-\d{2})T[\d:.]+/);
+  return asDate ? asDate[1] : s;
 }
 
 export function formatDiffReport(diffs: FieldDiff[]): string {

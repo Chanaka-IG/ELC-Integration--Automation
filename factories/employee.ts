@@ -8,10 +8,57 @@ import { OhrmEmployeeInput, WizardOnlyInput } from '../oracle/ohrm-to-bizpay';
 let seq = 0;
 
 export function makeRunId(): string {
-  // e.g. 0727-1432 — readable in evidence, unique enough per run
+  // e.g. 0727-143205 — readable in evidence, unique per run. Seconds are part
+  // of the id because BizPay enforces "Employee number must be unique within
+  // the payroll": two runs started in the same minute would otherwise build
+  // the same employeeId and the second one could not be inserted.
   const d = new Date();
   const p = (n: number) => String(n).padStart(2, '0');
-  return `${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`;
+  return (
+    `${p(d.getMonth() + 1)}${p(d.getDate())}-` +
+    `${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`
+  );
+}
+
+/**
+ * Jamaican TRN check digit, reverse-engineered from the QA sandbox's own data
+ * and confirmed against all 2706 distinct 9-digit TRNs on the company's
+ * payrolls (100% match, 2026-08-10):
+ *
+ *   weights 9 8 7 6 5 4 3 2 over the first 8 digits, r = sum mod 11,
+ *   check digit = (11 - r) mod 10
+ *
+ * (Sanity check: 12101229|8 → sum 69, 69 mod 11 = 3, (11-3) mod 10 = 8.)
+ */
+export function trnCheckDigit(first8: string): number {
+  const weights = [9, 8, 7, 6, 5, 4, 3, 2];
+  const sum = weights.reduce((acc, w, i) => acc + w * Number(first8[i]), 0);
+  return (11 - (sum % 11)) % 10;
+}
+
+const randomDigits = (n: number) =>
+  Array.from({ length: n }, () => Math.floor(Math.random() * 10)).join('');
+
+/**
+ * A fresh, checksum-valid TRN.
+ *
+ * BizPay rejects duplicates ("TRN must be unique within the payroll"), so this
+ * must NOT be a constant — a hardcoded TRN makes every run after the first
+ * un-insertable. Every real TRN in the sandbox starts 10-13, so the generated
+ * ones stay in that range to look like production data.
+ */
+export function makeTrn(): string {
+  const first8 = `1${Math.floor(Math.random() * 4)}${randomDigits(6)}`;
+  return `${first8}${trnCheckDigit(first8)}`;
+}
+
+/**
+ * A fresh NIS in the sandbox's dominant format (one uppercase letter + 6
+ * digits). Unique for the same reason as the TRN.
+ */
+export function makeNis(): string {
+  const letter = 'ABCDEFGHJKLMNPQRSTUVWXYZ'[Math.floor(Math.random() * 24)];
+  return `${letter}${randomDigits(6)}`;
 }
 
 export interface EmployeeOverrides extends Partial<OhrmEmployeeInput> {}
@@ -83,9 +130,13 @@ export function buildEmployee(overrides: EmployeeOverrides = {}): OhrmEmployeeIn
     location: 'name_102',
     maritalStatus: 'Single',
     nationality: 'Afghan',
-    otherId: 'A123456', // → BizPay NIS (letter + 6 digits)
-    ssn: '121012298', // → BizPay TRN (9 digits; passes the mod-11 check)
-    nisNumber: 'A123456', // UI-only "NIS Number" field (not synced)
+    // TRN and NIS are generated per employee, never hardcoded: BizPay enforces
+    // "TRN must be unique within the payroll" / "NIS must be unique within the
+    // payroll", so a fixed value only ever inserts once and every later run
+    // fails with a 400 from the insert import.
+    otherId: makeNis(), // → BizPay NIS (letter + 6 digits)
+    ssn: makeTrn(), // → BizPay TRN (9 digits, valid check digit)
+    nisNumber: makeNis(), // UI-only "NIS Number" field (not synced)
     // a real company domain, matching how the field is used in production
     workEmail: `qa.add.${uniq}@jngroup.com`.toLowerCase(),
     mobile: '5551234567',

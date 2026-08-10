@@ -13,6 +13,21 @@ import { pollUntil } from '../utils/poll';
  *  (GET /flows/{id}/jobs does NOT exist — returns 404.)
  */
 
+export interface CeligoError {
+  occurredAt?: string;
+  source?: string;
+  code?: string;
+  message?: string;
+  traceKey?: string;
+  errorId?: string;
+  _flowJobId?: string;
+  /** Added by getJobErrors(): which flow step the error came from. */
+  _resourceId?: string;
+  /** Added by getJobErrors(): 'open' | 'resolved'. */
+  type?: string;
+  [key: string]: unknown;
+}
+
 export interface CeligoJob {
   _id: string;
   status: string; // queued | running | completed | failed | canceled
@@ -94,6 +109,52 @@ export class CeligoApi {
         return done ?? null;
       },
       { timeoutMs, intervalMs: 10_000, label: `flow ${this.flowId} run after ${since.toISOString()}` },
+    );
+  }
+
+  /**
+   * Every error (open and resolved) recorded against a specific job, across
+   * all steps of the flow.
+   *
+   * This flow is a SHARED batch: one run processes every employee with a
+   * pending change event, so a run's numError counts other people's records
+   * too — including test data left behind by earlier runs. Judging our
+   * employee by the batch total makes the test fail for reasons that have
+   * nothing to do with it, so errors are pulled per job and filtered by trace
+   * key instead ("Employee - <empNumber>_<employeeId>").
+   */
+  async getJobErrors(jobId: string): Promise<CeligoError[]> {
+    const steps = await this.getFlowErrorSummary();
+    const found: CeligoError[] = [];
+    for (const step of steps) {
+      const resourceId = step._expOrImpId as string;
+      if (!resourceId) continue;
+      for (const type of ['open', 'resolved'] as const) {
+        const res = await this.request.get(
+          `${this.base}/flows/${this.flowId}/${resourceId}/errors?type=${type}`,
+          { headers: this.headers() },
+        );
+        if (!res.ok()) continue; // a step with no error store answers 404
+        const body = (await res.json()) as { errors?: CeligoError[] };
+        for (const err of body.errors ?? []) {
+          if (err._flowJobId === jobId) found.push({ ...err, _resourceId: resourceId, type });
+        }
+      }
+    }
+    return found;
+  }
+
+  /** Errors from `jobId` whose trace key names this employee. */
+  async getEmployeeErrors(
+    jobId: string,
+    empNumber: string,
+    employeeId: string,
+  ): Promise<CeligoError[]> {
+    const errors = await this.getJobErrors(jobId);
+    return errors.filter(
+      (e) =>
+        typeof e.traceKey === 'string' &&
+        (e.traceKey.includes(`${empNumber}_${employeeId}`) || e.traceKey.includes(employeeId)),
     );
   }
 

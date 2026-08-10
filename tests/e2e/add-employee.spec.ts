@@ -71,8 +71,25 @@ test('new employee in OHRM syncs to BizPay with all mapped fields', async ({ pag
     const jobId = await celigo.runSyncEmployeesFlow(); // returns _jobId directly
     const job = await celigo.waitForJob(jobId);
     expect(job.status, `run ${jobId} should complete`).toBe('completed');
-    expect(job.numError ?? 0, `run ${jobId} should have no errors`).toBe(0);
-    expect(job.numSuccess ?? 0, `run ${jobId} should process our employee`).toBeGreaterThan(0);
+
+    // numSuccess/numError describe a SHARED batch over every employee with a
+    // pending change event, so neither is an assertion about this test: a run
+    // can succeed on 20 other records and still skip ours, or carry errors
+    // from data this test never touched. They are recorded as evidence only —
+    // whether OUR employee synced is decided by the BizPay record and the
+    // write-back status below. Only errors carrying our trace key fail here.
+    const ourErrors = await celigo.getEmployeeErrors(jobId, pim.empNumber!, emp.employeeId);
+    const detail = ourErrors
+      .map((e) => `[${e.source}/${e.code}] ${e.message} (trace ${e.traceKey})`)
+      .join('\n');
+    await test.info().attach('celigo-job-summary', {
+      body:
+        `job ${jobId}: status=${job.status} success=${job.numSuccess} ` +
+        `error=${job.numError} resolved=${job.numResolved} openError=${job.numOpenError}\n` +
+        `errors naming ${pim.empNumber}_${emp.employeeId}: ${ourErrors.length}\n${detail}`,
+      contentType: 'text/plain',
+    });
+    expect(ourErrors, `Celigo errors for our employee:\n${detail}`).toEqual([]);
   });
 
   await test.step('BizPay: employee exists with correct field values', async () => {
