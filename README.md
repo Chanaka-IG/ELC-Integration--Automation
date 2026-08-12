@@ -45,6 +45,16 @@ npm test
    reads jobs/errors.
 5. **Teardown must set Skip-sync before deleting** test employees, so cleanup
    doesn't generate new sync events.
+6. **Master data and custom-field ids are instance state, not constants.**
+   Rebuilding the OHRM QA instance renumbers every custom field and replaces
+   every dropdown list, which breaks the suite quietly. After a rebuild, re-derive
+   both instead of editing selectors by hand:
+   - `node explore/dump-custom-field-ids.cjs <empNumber>` → the ids for
+     `pages/ohrm/customFields.ts`
+   - `node explore/dump-job-tab.cjs` → OHRM's Job-tab dropdown values; intersect
+     them with the BizPay lookup tables before setting the defaults in
+     `factories/employee.ts` (sub unit / job title / employment status are
+     resolved by exact NAME, and two of the three fail silently on a miss)
 
 ## Status / TODO
 
