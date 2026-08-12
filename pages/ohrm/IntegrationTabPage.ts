@@ -1,27 +1,39 @@
 import { Page, expect } from '@playwright/test';
+import { CUSTOM_FIELD_IDS as IDS, cf } from './customFields';
 
 /**
- * "BizPay Integration - Sync Information" custom tab (pim tab id 397).
- * URL: /client/#/pim/employees/{empNumber}/employee_pim_tab/397
- * Selectors verified live on 2026-07-27 (input ids = custom field ids). The ids
- * start with a digit, so they are only reachable as [id="..."] — "#122" is not
- * a valid CSS selector and throws in the browser:
- *   122 Last Sync Date (UTC)     123 Last Sync Time (UTC)
- *   Last Sync Status             (custom dropdown, no id — label-anchored)
- *   126_Yes / 126_No             "Employee Exists in BizPay?" radios
- *   127Yes                       "Re-sync Employee" checkbox
- *   128Yes                       "Skip-sync" checkbox
- *   131                          "Bizpay Employee Unique Identifier"
+ * "BizPay Integration - Sync Information" custom tab.
+ * URL: /client/#/pim/employees/{empNumber}/employee_pim_tab/{syncTab}
  *
- * NOTE: "Payroll Name" (cust121) is NOT on this tab — it is a dropdown on
- * the JOB tab (see AddEmployeePage.setPayrollName).
+ * Every input id on this tab is an instance-specific database id — they are all
+ * declared in pages/ohrm/customFields.ts and were renumbered by the 2026-08-12
+ * instance rebuild. Re-derive them with explore/dump-custom-field-ids.cjs rather
+ * than editing selectors here.
+ *
+ * NOTE: "Payroll Name" is NOT on this tab — it is a dropdown on the JOB tab
+ * (see AddEmployeePage.setPayrollName).
  */
 export class IntegrationTabPage {
   constructor(private page: Page) {}
 
   async open(empNumber: string): Promise<void> {
-    await this.page.goto(`/client/#/pim/employees/${empNumber}/employee_pim_tab/397`);
-    await this.page.locator('[id="122"]').waitFor({ state: 'visible', timeout: 60_000 });
+    await this.page.goto(
+      `/client/#/pim/employees/${empNumber}/employee_pim_tab/${IDS.syncTab}`,
+    );
+    await this.page.locator(cf(IDS.lastSyncDate)).waitFor({ state: 'visible', timeout: 60_000 });
+  }
+
+  /**
+   * "Last Sync Status" is a native <select> whose option values carry an Angular
+   * "string:" prefix, so inputValue() would yield "string:Successful". Read the
+   * selected option's text instead, and report the placeholder as empty.
+   */
+  private async readSyncStatusValue(): Promise<string> {
+    const text = await this.page.locator(cf(IDS.lastSyncStatus)).evaluate((el) => {
+      const select = el as HTMLSelectElement;
+      return select.selectedOptions[0]?.textContent?.trim() ?? '';
+    });
+    return /^--.*--$/.test(text) ? '' : text;
   }
 
   /** Write-back fields — the post-sync assertion target. */
@@ -33,15 +45,12 @@ export class IntegrationTabPage {
     bizpayUniqueId: string;
   }> {
     await this.open(empNumber);
-    const statusInput = this.page
-      .locator('.row:has(label:text-is("Last Sync Status")) input, [class*=field]:has(label:text-is("Last Sync Status")) input')
-      .first();
     return {
-      lastSyncDate: await this.page.locator('[id="122"]').inputValue(),
-      lastSyncTime: await this.page.locator('[id="123"]').inputValue(),
-      lastSyncStatus: await statusInput.inputValue(),
-      employeeExistsInBizpay: await this.page.locator('[id="126_Yes"]').isChecked(),
-      bizpayUniqueId: await this.page.locator('[id="131"]').inputValue(),
+      lastSyncDate: await this.page.locator(cf(IDS.lastSyncDate)).inputValue(),
+      lastSyncTime: await this.page.locator(cf(IDS.lastSyncTime)).inputValue(),
+      lastSyncStatus: await this.readSyncStatusValue(),
+      employeeExistsInBizpay: await this.page.locator(cf(IDS.existsInBizpayYes)).isChecked(),
+      bizpayUniqueId: await this.page.locator(cf(IDS.bizpayUniqueId)).inputValue(),
     };
   }
 
@@ -51,7 +60,7 @@ export class IntegrationTabPage {
    */
   async setSkipSync(empNumber: string, value: boolean): Promise<void> {
     await this.open(empNumber);
-    const checkbox = this.page.locator('[id="128Yes"]');
+    const checkbox = this.page.locator(cf(IDS.skipSync));
     if ((await checkbox.isChecked()) !== value) {
       await checkbox.click({ force: true });
       await this.page.getByRole('button', { name: /^save$/i }).first().click();
@@ -64,6 +73,9 @@ export class IntegrationTabPage {
     const s = await this.readSyncStatus(empNumber);
     expect(s.employeeExistsInBizpay, 'Employee Exists in BizPay must not be Yes').toBe(false);
     expect(s.bizpayUniqueId, 'BizPay Unique Id must be empty for insert path').toBe('');
-    expect(await this.page.locator('[id="128Yes"]').isChecked(), 'Skip-sync must be off').toBe(false);
+    expect(
+      await this.page.locator(cf(IDS.skipSync)).isChecked(),
+      'Skip-sync must be off',
+    ).toBe(false);
   }
 }

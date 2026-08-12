@@ -1,5 +1,6 @@
 import { Locator, Page, expect } from '@playwright/test';
 import { OhrmEmployeeInput } from '../../oracle/ohrm-to-bizpay';
+import { CUSTOM_FIELD_IDS as IDS, cf } from './customFields';
 
 /**
  * PIM add-employee + profile tabs for OrangeHRM 8.1 Enterprise (JN build).
@@ -25,9 +26,10 @@ import { OhrmEmployeeInput } from '../../oracle/ohrm-to-bizpay';
  * least one record for the section(s) to proceed" until a record exists, so the
  * wizard cannot be short-circuited.
  *
- * PAYROLL NAME IS NOT IN THE WIZARD. cust121 ("Payroll Name") — the field that
+ * PAYROLL NAME IS NOT IN THE WIZARD. The "Payroll Name" custom field — which
  * routes the employee to a BizPay payroll — only exists on the profile Job tab,
- * so setPayrollName() must run after the wizard completes.
+ * so setPayrollName() must run after the wizard completes. Its element id is an
+ * instance-specific database id; see pages/ohrm/customFields.ts.
  *
  * Both email fields on step 3 are declared with ngModelOptions debounce (1000ms
  * work, 750ms personal). Clicking Next inside that window submits before the
@@ -38,7 +40,7 @@ import { OhrmEmployeeInput } from '../../oracle/ohrm-to-bizpay';
  *  - Personal Details (#/pim/employees/{n}/personal_details): #otherId,
  *    #ssn (labelled "TRN"), #sin (labelled "NIS Number"), #emp_birthday.
  *  - Job (#/pim/employees/{n}/job): Job Title / Sub Unit / Employment Status
- *    AND the "Payroll Name" custom dropdown (cust121).
+ *    AND the "Payroll Name" custom dropdown.
  *
  * NIS/TRN trap (verified): the integration maps BizPay NIS ← "Other Id"
  * (#otherId) and BizPay TRN ← #ssn. The separate "NIS Number" field (#sin)
@@ -365,7 +367,7 @@ export class AddEmployeePage {
     // an <a>, not a <button>, so target the Save inside the nearest container
     // that also holds the Payroll Name field.
     const card = this.page
-      .locator('[id="121"]')
+      .locator(cf(IDS.payrollName))
       .locator(
         'xpath=ancestor::*[.//a[normalize-space()="Save"] or .//button[normalize-space()="Save"]][1]',
       );
@@ -391,7 +393,7 @@ export class AddEmployeePage {
     // the save reports nothing on failure — reload and prove it stuck
     await this.page.reload();
     await this.page.waitForLoadState('networkidle').catch(() => {});
-    await expect(this.page.locator('[id="121"] input')).toHaveValue(emp.payrollName, {
+    await expect(this.page.locator(`${cf(IDS.payrollName)} input`)).toHaveValue(emp.payrollName, {
       timeout: 30_000,
     });
   }
