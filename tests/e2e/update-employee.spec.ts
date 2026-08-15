@@ -4,6 +4,7 @@ import { AddEmployeePage } from '../../pages/ohrm/AddEmployeePage';
 import { IntegrationTabPage } from '../../pages/ohrm/IntegrationTabPage';
 import { SysAdminPage } from '../../pages/ohrm/SysAdminPage';
 import { OhrmApi, toReportTimestamp } from '../../api/ohrm';
+import { OhrmEmployeeApi } from '../../api/ohrm-employees';
 import { CeligoApi } from '../../api/celigo';
 import { BizpayApi } from '../../api/bizpay';
 import { buildEmployee } from '../../factories/employee';
@@ -59,10 +60,12 @@ test('editing a synced employee in OHRM updates the BizPay record without duplic
 
   let syncedUniqueId = '';
 
-  await test.step('Setup — OHRM: add employee with all mapped fields', async () => {
+  await test.step('Setup — OHRM: add employee with all mapped fields (via API)', async () => {
     await new LoginPage(page).loginAsSysadmin();
-    await pim.addEmployee(emp); // 6-step wizard
-    await pim.setPayrollName(emp); // cust121 is not in the wizard — Job tab only
+    // Setup uses the API (UI-variant-proof, includes Payroll Name); the UPDATE
+    // leg below still edits through the profile tabs — that UI flow is the
+    // behaviour this spec is testing.
+    pim.empNumber = await new OhrmEmployeeApi(page).createEmployee(emp);
   });
 
   await test.step('Setup — sync employee to BizPay (insert path)', async () => {

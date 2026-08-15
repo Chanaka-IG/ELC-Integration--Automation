@@ -5,6 +5,13 @@ import { CUSTOM_FIELD_IDS as IDS, cf } from './customFields';
 /**
  * PIM add-employee + profile tabs for OrangeHRM 8.1 Enterprise (JN build).
  *
+ * NOTE (2026-08-15): the e2e specs no longer use addEmployee()/setPayrollName()
+ * — creation goes through api/ohrm-employees.ts, because this instance toggles
+ * the wizard on and off between rebuilds and the API path is immune to that.
+ * The wizard code below is kept as a fallback / for wizard-UI coverage; the
+ * profile-tab methods (fillPersonalDetails etc.) are still used by the update
+ * spec.
+ *
  * ADD EMPLOYEE IS A 6-STEP WIZARD on this build (re-verified live 2026-07-31 —
  * the modal used to have a Save button and created the employee in one shot):
  *

@@ -15,8 +15,8 @@ OHRM UI (add employee)  →  RabbitMQ consumer (sysadmin UI)  →  change report
 | Path | Purpose |
 |---|---|
 | `oracle/ohrm-to-bizpay.ts` | **Single source of truth**: field mappings + transformations + validation rules, reconstructed from the Celigo configs |
-| `pages/ohrm/` | Page objects: login, PIM add-employee, integration custom tab, sysadmin RabbitMQ trigger |
-| `api/` | API clients: OHRM change report, Celigo (run flow / poll jobs / errors), BizPay verification |
+| `pages/ohrm/` | Page objects: login, integration custom tab, sysadmin RabbitMQ trigger (+ the add-employee wizard, kept as a fallback — specs no longer drive it) |
+| `api/` | API clients: OHRM change report, **OHRM employee creation** (`ohrm-employees.ts`), Celigo (run flow / poll jobs / errors), BizPay verification |
 | `factories/employee.ts` | Unique, traceable test employees (`QA-ADD-<runId>`) |
 | `utils/` | Polling (no sleeps) and oracle-driven field diffing |
 | `tests/e2e/` | Happy-path end-to-end specs (add / insert path, update path) |
@@ -59,6 +59,13 @@ npm test
 ## Status / TODO
 
 - [x] Framework scaffold, mapping oracle, API clients, e2e spec
+- [x] **Employee creation moved from UI to API** (`api/ohrm-employees.ts`,
+      verified live 2026-08-15): the Add Employee wizard is toggled on/off
+      between instance rebuilds, so specs now create employees through the
+      backend endpoints both UI variants share (see
+      `explore/api-capture-notes.md`). Payroll Name is set during creation,
+      located by label — no dependence on `customFields.ts` ids on this path.
+      The wizard page object remains as a fallback only.
 - [x] Update-path spec (`tests/e2e/update-employee.spec.ts`): edit an
       already-synced employee, verify the UPDATE leg — in-place PUT, no
       duplicate, unchanged fields untouched, Unique Id stable
