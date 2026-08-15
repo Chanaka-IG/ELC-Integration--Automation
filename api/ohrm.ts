@@ -1,21 +1,6 @@
 import { APIRequestContext } from '@playwright/test';
 import { NonRetryableError } from '../utils/poll';
 
-/**
- * OrangeHRM API client.
- *
- * Auth: OAuth2 client_credentials — mirrors the Celigo connection's iClient
- * exactly (verified from "[JN] [BIZPAY] [4.0] - OrangeHRM OAuth Client"):
- *   POST {base}/oauth/issueToken  (credentials in body)  → Bearer token
- * Tokens are minted on demand and cached until shortly before expiry.
- * Setting OHRM_ACCESS_TOKEN overrides minting and uses that token as-is — for
- * when OHRM has temporarily blocked the token endpoint.
- *
- * The changed-employee report is the EXACT endpoint the Celigo flow's page
- * generator calls — verifying against it proves the OHRM half of the pipeline
- * (add → async event → RabbitMQ consumer → report) independently of Celigo.
- */
-
 export interface ChangeEvent {
   empNumber: string;
   employeeId: string;
@@ -45,14 +30,6 @@ export class OhrmApi {
 
   /** Mint (or reuse) a client_credentials access token. */
   private async getToken(): Promise<string> {
-    // Escape hatch: a token supplied out-of-band is preferred. Needed when
-    // OHRM has temporarily blocked /oauth/issueToken but still honours a valid
-    // Bearer token — otherwise the run cannot proceed at all.
-    //
-    // It is only PREFERRED, never mandatory: a stale OHRM_ACCESS_TOKEN left in
-    // .env used to dead-end every run with 401 expired_token, because minting
-    // was skipped unconditionally. Once the supplied token is rejected we fall
-    // back to client_credentials for the rest of the run.
     if (process.env.OHRM_ACCESS_TOKEN && !this.suppliedTokenRejected) {
       return process.env.OHRM_ACCESS_TOKEN;
     }

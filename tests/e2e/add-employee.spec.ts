@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../../pages/ohrm/LoginPage';
-import { AddEmployeePage } from '../../pages/ohrm/AddEmployeePage';
 import { IntegrationTabPage } from '../../pages/ohrm/IntegrationTabPage';
 import { SysAdminPage } from '../../pages/ohrm/SysAdminPage';
 import { OhrmApi, toReportTimestamp } from '../../api/ohrm';
+import { OhrmEmployeeApi } from '../../api/ohrm-employees';
 import { CeligoApi } from '../../api/celigo';
 import { BizpayApi } from '../../api/bizpay';
 import { buildEmployee } from '../../factories/employee';
@@ -30,19 +30,17 @@ test('new employee in OHRM syncs to BizPay with all mapped fields', async ({ pag
   // payroll_id = the part of Payroll Name before '_' (e.g. "685_BIZ... - JN" → "685")
   const payrollId = emp.payrollName.split('_')[0];
 
-  const pim = new AddEmployeePage(page);
   const integrationTab = new IntegrationTabPage(page);
+  let empNumber = '';
 
-  await test.step('OHRM: add employee with all mapped fields', async () => {
-    await new LoginPage(page).loginAsSysadmin(); // sysadmin performs all OHRM actions
-    // the 6-step wizard covers personal, job, contact and the mandatory list steps
-    await pim.addEmployee(emp);
-    await pim.setPayrollName(emp); // cust121 is not in the wizard — Job tab only
+  await test.step('OHRM: add employee with all mapped fields (via API)', async () => {
+    await new LoginPage(page).loginAsSysadmin();
+    empNumber = await new OhrmEmployeeApi(page).createEmployee(emp);
   });
 
   await test.step('OHRM: BizPay tab routing fields are insert-ready', async () => {
     // Exists=No/empty + Unique Id empty + Skip-sync off → insert path
-    await integrationTab.assertReadyForInsertPath(pim.empNumber!);
+    await integrationTab.assertReadyForInsertPath(empNumber);
   });
 
   await test.step('OHRM: publish then consume the RabbitMQ queue', async () => {
@@ -72,13 +70,7 @@ test('new employee in OHRM syncs to BizPay with all mapped fields', async ({ pag
     const job = await celigo.waitForJob(jobId);
     expect(job.status, `run ${jobId} should complete`).toBe('completed');
 
-    // numSuccess/numError describe a SHARED batch over every employee with a
-    // pending change event, so neither is an assertion about this test: a run
-    // can succeed on 20 other records and still skip ours, or carry errors
-    // from data this test never touched. They are recorded as evidence only —
-    // whether OUR employee synced is decided by the BizPay record and the
-    // write-back status below. Only errors carrying our trace key fail here.
-    const ourErrors = await celigo.getEmployeeErrors(jobId, pim.empNumber!, emp.employeeId);
+    const ourErrors = await celigo.getEmployeeErrors(jobId, empNumber, emp.employeeId);
     const detail = ourErrors
       .map((e) => `[${e.source}/${e.code}] ${e.message} (trace ${e.traceKey})`)
       .join('\n');
@@ -86,7 +78,7 @@ test('new employee in OHRM syncs to BizPay with all mapped fields', async ({ pag
       body:
         `job ${jobId}: status=${job.status} success=${job.numSuccess} ` +
         `error=${job.numError} resolved=${job.numResolved} openError=${job.numOpenError}\n` +
-        `errors naming ${pim.empNumber}_${emp.employeeId}: ${ourErrors.length}\n${detail}`,
+        `errors naming ${empNumber}_${emp.employeeId}: ${ourErrors.length}\n${detail}`,
       contentType: 'text/plain',
     });
     expect(ourErrors, `Celigo errors for our employee:\n${detail}`).toEqual([]);
@@ -106,7 +98,7 @@ test('new employee in OHRM syncs to BizPay with all mapped fields', async ({ pag
   });
 
   await test.step('OHRM: write-back sync status is Successful', async () => {
-    const status = await integrationTab.readSyncStatus(pim.empNumber!);
+    const status = await integrationTab.readSyncStatus(empNumber);
     expect(status.lastSyncStatus).toBe('Successful');
     expect(status.employeeExistsInBizpay, 'Exists in BizPay flips to Yes').toBe(true);
     expect(status.bizpayUniqueId, 'BizPay unique id written back').not.toBe('');
